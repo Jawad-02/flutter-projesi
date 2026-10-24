@@ -39,7 +39,7 @@ flutter-projesi/                    # git repo root (one PR)
     │   └── skills/                 # Boost Laravel skills
     ├── app/
     │   └── Filament/               # admin resources (Phase 2+)
-    ├── routes/api.php + api/v1.php # /api/v1 health now
+    ├── routes/api.php + api/v1.php # /api/v1 catalog API
     ├── public/brand/               # logos + fonts served to admin
     ├── resources/css/filament/admin/theme.css
     └── .env                        # local secrets (ignored)
@@ -197,16 +197,18 @@ php artisan migrate --seed
 |---|---|---|---|
 | 1 | Widget test expects `Home`/`Cart`; UI renders `Ana Sayfa`/`Sepet` | `test/widget_test.dart:12` | `flutter test` fails |
 | 2 | `Navigator.pushNamed(context, '/cart')` has no route | `product_detail_page.dart:197`, `main.dart` | Detail cart icon / snackbar action throws |
-| 3 | Total formatted with `toStringAsFixed(0)` | `cart_model.dart:18` | No cents, rounding |
-| 4 | Detail button label uses `cart.totalItems` | `product_detail_page.dart:183` | Misleading |
-| 5 | TLS accepts any certificate | `http_client_io.dart:9` | Demo only; remove before production |
-| 6 | `dart:html` deprecated | `http_client_web.dart:2` | 2 accepted analyzer infos |
-| 7 | Duplicated currency symbol (`USD $999`) | product card/detail/cart | Cosmetic |
-| 8 | No error/empty-state tests | `test/` | Low coverage |
-| 9 | Cart not persisted; checkout is a stub | cart model/page | Will be replaced by backend |
-| 10 | iOS build impossible on Linux | `ios/` | Environment |
-| 11 | Emulator is slow under host load | AVD | Use 480x1040/4-vCPU AVD; prefer `make app` |
-| 12 | `make run` rebuilds via Gradle (~10 min first time) | Makefile | Use `make app` for quick checks |
+| 3 | Detail button label uses `cart.totalItems` | `product_detail_page.dart:183` | Misleading |
+| 4 | TLS accepts any certificate | `http_client_io.dart:9` | Demo only; remove before production |
+| 5 | `dart:html` deprecated | `http_client_web.dart:2` | 2 accepted analyzer infos |
+| 6 | No error/empty-state tests | `test/` | Low coverage |
+| 7 | Cart not persisted; checkout is a stub | cart model/page | Will be replaced by backend |
+| 8 | iOS build impossible on Linux | `ios/` | Environment |
+| 9 | Emulator is slow under host load | AVD | Use 480x1040/4-vCPU AVD; prefer `make app` |
+| 10 | `make run` rebuilds via Gradle (~10 min first time) | Makefile | Use `make app` for quick checks |
+| 11 | Shield permissions not generated for catalog resources | `app/Filament` | Only `super_admin` bypass works; run `shield:generate` before staff roles |
+| 12 | Demo images are external wantapi URLs | `CatalogSeeder` | Replace with R2 media before release |
+| 13 | Admin price inputs are labeled in cents | `ProductForm` | Usability; add a money input later |
+| 14 | API base URL defaults to `10.0.2.2` for the emulator | `lib/config/api_config.dart` | Physical device needs `--dart-define=API_BASE_URL=...` |
 
 Do not fix these unless they are in `TASKS.md`.
 
