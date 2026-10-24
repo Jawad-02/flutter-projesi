@@ -1,3 +1,5 @@
+import 'product_variant.dart';
+
 class Product {
   final int id;
   final String name;
@@ -14,6 +16,7 @@ class Product {
   final String? brandName;
   final bool inStock;
   final bool isFeatured;
+  final List<ProductVariant> variants;
 
   const Product({
     required this.id,
@@ -31,12 +34,14 @@ class Product {
     this.brandName,
     this.inStock = true,
     this.isFeatured = false,
+    this.variants = const [],
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     final category = json['category'];
     final brand = json['brand'];
     final rawImages = json['images'];
+    final rawVariants = json['variants'];
 
     return Product(
       id: json['id'] as int,
@@ -50,9 +55,12 @@ class Product {
       image: json['image'] as String? ?? '',
       images: rawImages is List
           ? rawImages
-              .map((item) => (item as Map<String, dynamic>)['url'] as String? ?? '')
-              .where((url) => url.isNotEmpty)
-              .toList()
+                .map(
+                  (item) =>
+                      (item as Map<String, dynamic>)['url'] as String? ?? '',
+                )
+                .where((url) => url.isNotEmpty)
+                .toList()
           : const [],
       specs: json['specs'] is Map
           ? (json['specs'] as Map).cast<String, dynamic>()
@@ -61,7 +69,24 @@ class Product {
       brandName: brand is Map ? brand['name'] as String? : null,
       inStock: json['in_stock'] as bool? ?? true,
       isFeatured: json['is_featured'] as bool? ?? false,
+      variants: rawVariants is List
+          ? rawVariants
+                .map(
+                  (item) =>
+                      ProductVariant.fromJson(item as Map<String, dynamic>),
+                )
+                .toList()
+          : const [],
     );
+  }
+
+  int? get defaultVariantId {
+    if (variants.isEmpty) {
+      return null;
+    }
+
+    final inStock = variants.where((variant) => variant.stockQuantity > 0);
+    return (inStock.isNotEmpty ? inStock.first : variants.first).id;
   }
 
   String get imageUrl {

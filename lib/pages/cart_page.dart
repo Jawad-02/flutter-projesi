@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../models/cart_item.dart';
 import '../models/cart_model.dart';
 import '../main.dart';
+import '../services/auth_scope.dart';
+import 'checkout_page.dart';
+import 'login_page.dart';
 import 'product_detail_page.dart';
 
 class CartPage extends StatelessWidget {
@@ -29,9 +32,9 @@ class CartPage extends StatelessWidget {
                   child: Text(
                     'Sepet',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF1D1D1F),
-                        ),
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF1D1D1F),
+                    ),
                   ),
                 ),
               ),
@@ -55,7 +58,8 @@ class CartPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => ProductDetailPage(product: item.product),
+                          builder: (_) =>
+                              ProductDetailPage(product: item.product),
                         ),
                       );
                     },
@@ -66,9 +70,7 @@ class CartPage extends StatelessWidget {
               ),
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                sliver: SliverToBoxAdapter(
-                  child: _CheckoutCard(cart: cart),
-                ),
+                sliver: SliverToBoxAdapter(child: _CheckoutCard(cart: cart)),
               ),
             ],
           );
@@ -89,7 +91,11 @@ class _EmptyCart extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.shopping_bag_outlined, size: 64, color: Colors.grey.shade300),
+          Icon(
+            Icons.shopping_bag_outlined,
+            size: 64,
+            color: Colors.grey.shade300,
+          ),
           const SizedBox(height: 16),
           Text(
             'Sepetiniz boş',
@@ -161,7 +167,7 @@ class _CartItemCard extends StatelessWidget {
                 height: 80,
                 color: const Color(0xFFF8F8FA),
                 padding: const EdgeInsets.all(8),
-                child:                 Image.network(
+                child: Image.network(
                   product.imageUrl,
                   fit: BoxFit.contain,
                   webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
@@ -191,10 +197,7 @@ class _CartItemCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     product.tagline,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade500,
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -218,10 +221,7 @@ class _CartItemCard extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _QtyButton(
-                    icon: Icons.remove,
-                    onTap: onDecrement,
-                  ),
+                  _QtyButton(icon: Icons.remove, onTap: onDecrement),
                   SizedBox(
                     width: 36,
                     child: Center(
@@ -234,10 +234,7 @@ class _CartItemCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  _QtyButton(
-                    icon: Icons.add,
-                    onTap: onIncrement,
-                  ),
+                  _QtyButton(icon: Icons.add, onTap: onIncrement),
                 ],
               ),
             ),
@@ -317,26 +314,16 @@ class _CheckoutCard extends StatelessWidget {
             height: 52,
             child: FilledButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Sipariş alındı! Toplam: ${cart.totalPriceFormatted}'),
-                    behavior: SnackBarBehavior.floating,
-                    duration: const Duration(seconds: 3),
-                  ),
+                final auth = AuthScope.of(context);
+                final target = auth.isAuthenticated
+                    ? const CheckoutPage()
+                    : const LoginPage();
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => target),
                 );
-                cart.clear();
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF1D1D1F),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
               child: const Text('Satın Al'),
             ),
           ),

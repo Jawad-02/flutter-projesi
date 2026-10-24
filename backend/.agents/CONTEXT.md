@@ -126,8 +126,9 @@ SESSION_DRIVER=database
 
 ## 6. API plan (`/api/v1`)
 
-Live now: `/health`, `/products`, `/products/{slug}`, `/categories`,
-`/categories/{slug}`, `/brands`, `/brands/{slug}`.
+Live now: `/health`, catalog endpoints, `/auth/*`, `/cart` + `/cart/items` +
+`/cart/merge`, `/shipping/methods`, `/coupons/validate`, `/checkout/quote`,
+`/orders` (+ detail/cancel), `/addresses`, `/wishlist`.
 
 ```text
 POST   /auth/register
@@ -228,16 +229,21 @@ vendor/bin/pint --dirty --format agent
   slug, categories, brands under `/api/v1`.
 - Filament Catalog resources live for categories, brands, and products
   (variants/images repeaters, stock, filters, soft deletes).
+- Phase 3 added auth (Sanctum), addresses, wishlist, guest/auth carts,
+  coupons, shipping methods, checkout quotes, transactional idempotent orders,
+  inventory movements, manual payments, and Filament order/customer/coupon/
+  shipping resources. Guest carts merge on login; checkout requires auth.
 - `vendor/` and `node_modules/` stay inside the project: Composer autoload
   resolves relative to `vendor/`, so moving it breaks Artisan. Both are ignored
   by Git; caches belong on Storage.
-- Tests: Pest 11/11 (admin pages, catalog API, auth boundaries, health).
+- Tests: Pest 23/23 (auth, cart/merge, checkout/orders, stock, idempotency,
+  addresses, wishlist, catalog, admin commerce pages, health).
 
 ## 11. Known gaps / next work
 
-1. Auth endpoints + customer addresses/wishlist (Phase 3).
-2. Cart/checkout/orders/inventory/coupons/shipping/tax/manual payments (Phase 3).
-3. Reviews/wishlist/notifications/reports/localization/tests (Phase 4).
+1. Reviews/notifications/search/reports/settings/activity log (Phase 4).
+2. Guest checkout and order lookup for guests (currently auth required).
+3. Assign Shield permissions to `admin`/`staff` roles (super_admin bypasses).
 4. Add real Neon/R2 credentials in `.env` and verify the remote disks.
 5. Replace the seeded local password before any deployment.
 6. Replace demo catalog images (wantapi URLs) with R2 media.

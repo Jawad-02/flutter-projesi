@@ -23,20 +23,21 @@ abstract final class RedEastTheme {
     final surface = isDark ? const Color(0xFF1C1C1C) : RedEastColors.white;
     final onSurface = isDark ? RedEastColors.white : RedEastColors.charcoal;
 
-    final scheme = ColorScheme.fromSeed(
-      seedColor: RedEastColors.red,
-      brightness: brightness,
-    ).copyWith(
-      primary: isDark ? RedEastColors.white : RedEastColors.charcoal,
-      onPrimary: isDark ? RedEastColors.ink : RedEastColors.white,
-      secondary: RedEastColors.red,
-      onSecondary: RedEastColors.white,
-      surface: surface,
-      onSurface: onSurface,
-      error: RedEastColors.red,
-      onError: RedEastColors.white,
-      outline: RedEastColors.gray,
-    );
+    final scheme =
+        ColorScheme.fromSeed(
+          seedColor: RedEastColors.red,
+          brightness: brightness,
+        ).copyWith(
+          primary: isDark ? RedEastColors.white : RedEastColors.charcoal,
+          onPrimary: isDark ? RedEastColors.ink : RedEastColors.white,
+          secondary: RedEastColors.red,
+          onSecondary: RedEastColors.white,
+          surface: surface,
+          onSurface: onSurface,
+          error: RedEastColors.red,
+          onError: RedEastColors.white,
+          outline: RedEastColors.gray,
+        );
 
     final base = ThemeData(
       useMaterial3: true,
@@ -139,10 +140,10 @@ abstract final class RedEastTheme {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor:
-              isDark ? RedEastColors.white : RedEastColors.charcoal,
-          foregroundColor:
-              isDark ? RedEastColors.ink : RedEastColors.white,
+          backgroundColor: isDark
+              ? RedEastColors.white
+              : RedEastColors.charcoal,
+          foregroundColor: isDark ? RedEastColors.ink : RedEastColors.white,
           minimumSize: const Size(0, 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
@@ -156,8 +157,9 @@ abstract final class RedEastTheme {
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: surface,
-        selectedItemColor:
-            isDark ? RedEastColors.white : RedEastColors.charcoal,
+        selectedItemColor: isDark
+            ? RedEastColors.white
+            : RedEastColors.charcoal,
         unselectedItemColor: RedEastColors.gray,
         type: BottomNavigationBarType.fixed,
         elevation: 0,
@@ -187,9 +189,7 @@ abstract final class RedEastTheme {
           color: RedEastColors.white,
         ),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       dividerTheme: DividerThemeData(color: outline, thickness: 1),
       inputDecorationTheme: InputDecorationTheme(

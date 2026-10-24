@@ -21,8 +21,9 @@ class ApiService {
       query['search'] = search.trim();
     }
 
-    final uri = Uri.parse('${ApiConfig.baseUrl}/products')
-        .replace(queryParameters: query);
+    final uri = Uri.parse(
+      '${ApiConfig.baseUrl}/products',
+    ).replace(queryParameters: query);
     final body = await HttpClientService.getString(uri.toString());
     final json = jsonDecode(body) as Map<String, dynamic>;
     final data = json['data'] as List<dynamic>;
@@ -33,16 +34,18 @@ class ApiService {
   }
 
   static Future<Product> fetchProduct(String slug) async {
-    final body =
-        await HttpClientService.getString('${ApiConfig.baseUrl}/products/$slug');
+    final body = await HttpClientService.getString(
+      '${ApiConfig.baseUrl}/products/$slug',
+    );
     final json = jsonDecode(body) as Map<String, dynamic>;
 
     return Product.fromJson(json['data'] as Map<String, dynamic>);
   }
 
   static Future<List<Category>> fetchCategories() async {
-    final body =
-        await HttpClientService.getString('${ApiConfig.baseUrl}/categories');
+    final body = await HttpClientService.getString(
+      '${ApiConfig.baseUrl}/categories',
+    );
     final json = jsonDecode(body) as Map<String, dynamic>;
     final data = json['data'] as List<dynamic>;
 

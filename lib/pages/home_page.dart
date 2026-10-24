@@ -29,8 +29,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _refresh() async {
     setState(() {
       _categoriesFuture = ApiService.fetchCategories();
-      _productsFuture =
-          ApiService.fetchProducts(category: _selectedCategory);
+      _productsFuture = ApiService.fetchProducts(category: _selectedCategory);
     });
     await _productsFuture;
   }
@@ -59,9 +58,9 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'Ürünler',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
             ),
           ),
@@ -85,11 +84,18 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.wifi_off, size: 48, color: Colors.grey.shade400),
+                      Icon(
+                        Icons.wifi_off,
+                        size: 48,
+                        color: Colors.grey.shade400,
+                      ),
                       const SizedBox(height: 12),
                       Text(
                         'Ürünler yüklenemedi',
-                        style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 16,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       FilledButton.tonalIcon(
@@ -112,34 +118,40 @@ class _HomePageState extends State<HomePage> {
                     crossAxisSpacing: 12,
                     childAspectRatio: 0.68,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final product = products[index];
-                      return ProductCard(
-                        product: product,
-                        inCart: cart.isInCart(product.id),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ProductDetailPage(product: product),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final product = products[index];
+                    return ProductCard(
+                      product: product,
+                      inCart: cart.isInCart(product.id),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ProductDetailPage(product: product),
+                          ),
+                        );
+                      },
+                      onAddToCart: () async {
+                        final added = await cart.addItem(product);
+
+                        if (!context.mounted) {
+                          return;
+                        }
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              added
+                                  ? '${product.name} sepete eklendi'
+                                  : (cart.error ?? 'Sepete eklenemedi'),
                             ),
-                          );
-                        },
-                        onAddToCart: () {
-                          cart.addItem(product);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('${product.name} sepete eklendi'),
-                              behavior: SnackBarBehavior.floating,
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    childCount: products.length,
-                  ),
+                            behavior: SnackBarBehavior.floating,
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                    );
+                  }, childCount: products.length),
                 ),
               );
             },
@@ -187,10 +199,9 @@ class _CategoryChips extends StatelessWidget {
                 selectedColor: Theme.of(context).colorScheme.primary,
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 side: BorderSide(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .outline
-                      .withValues(alpha: 0.4),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.outline.withValues(alpha: 0.4),
                 ),
                 labelStyle: TextStyle(
                   color: isSelected
@@ -200,8 +211,10 @@ class _CategoryChips extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontSize: 13,
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
               );
             },
           );

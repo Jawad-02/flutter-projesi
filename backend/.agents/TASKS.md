@@ -45,17 +45,17 @@
 | B-205 | Catalog tests | done | Pest 11/11 including admin pages + API filters |
 | B-206 | API docs updated | done | Scramble docs + `.agents/CONTEXT.md` |
 
-## Phase 3 — auth, cart, checkout, orders
+## Phase 3 — completed: auth, cart, checkout, orders
 
 | ID | Task | Status | Acceptance criteria |
 |---|---|---|---|
-| B-301 | Customer auth + addresses + wishlist | todo | Register/login/logout/me/profile; policies |
-| B-302 | Carts + guest merge + coupons | todo | Guest cart, merge on login, coupon validation |
-| B-303 | Shipping + tax + checkout quote | todo | Quote totals in integer cents |
-| B-304 | Orders + payments (manual/COD) + refunds | todo | Transactional, idempotent order creation |
-| B-305 | Inventory movements | todo | Reserve/decrement/restore with history |
-| B-306 | Filament orders/customers/coupons/shipping | todo | Status transitions, notes, refunds |
-| B-307 | Commerce tests | todo | Auth, cart, checkout, stock, idempotency |
+| B-301 | Customer auth + addresses + wishlist | done | Register/login/logout/me/profile; policies |
+| B-302 | Carts + guest merge + coupons | done | Guest cart, merge on login, coupon validation |
+| B-303 | Shipping + tax + checkout quote | done | Quote totals in integer cents |
+| B-304 | Orders + payments (manual/COD) + refunds | done | Transactional, idempotent order creation |
+| B-305 | Inventory movements | done | Reserve/decrement/restore with history |
+| B-306 | Filament orders/customers/coupons/shipping | done | Status transitions, notes, refunds |
+| B-307 | Commerce tests | done | Auth, cart, checkout, stock, idempotency |
 
 ## Phase 4 — engagement + quality
 
@@ -76,6 +76,7 @@
 | B-001..B-006 | Phase 0: backend docs, brand spec, skills paths, hygiene | 2026-10-24 | `php artisan about` OK; Pest 2/2 |
 | B-101..B-107 | Phase 1: Filament, Sanctum, Shield, R2, theme, seed | 2026-10-24 | Admin login 200; Pest 5/5; Vite build OK |
 | B-201..B-206 | Phase 2: catalog schema/admin/API/seed | 2026-10-24 | 20 products; Pest 11/11; Flutter loads API |
+| B-301..B-307 | Phase 3: auth, cart, checkout, orders, admin commerce | 2026-10-24 | Pest 23/23; transactional idempotent orders |
 
 ## Planning log
 
@@ -86,3 +87,4 @@
 | 2026-10-24 | vendor/node_modules correction | Composer autoload requires vendor inside the project; keep deps there, caches on Storage |
 | 2026-10-24 | Phase 1 complete | Filament 5 + Sanctum + Shield + R2 + Scramble; branded admin; seeded roles/users |
 | 2026-10-24 | Phase 2 complete | Catalog schema/admin/API/seed; Flutter fetches backend catalog |
+| 2026-10-24 | Phase 3 complete | Auth/cart/checkout/orders/coupons/shipping/manual payments + admin |

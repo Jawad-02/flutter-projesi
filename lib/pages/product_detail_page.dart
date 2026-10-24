@@ -15,15 +15,7 @@ class ProductDetailPage extends StatelessWidget {
     cart.quantityOf(product.id);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(product.name),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () => _goToCart(context),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text(product.name)),
       body: ListView(
         children: [
           Container(
@@ -31,7 +23,7 @@ class ProductDetailPage extends StatelessWidget {
             color: const Color(0xFFF8F8FA),
             child: Padding(
               padding: const EdgeInsets.all(32),
-              child:               Image.network(
+              child: Image.network(
                 product.imageUrl,
                 fit: BoxFit.contain,
                 webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
@@ -155,17 +147,22 @@ class ProductDetailPage extends StatelessWidget {
             width: double.infinity,
             height: 52,
             child: FilledButton(
-              onPressed: () {
-                cart.addItem(product);
+              onPressed: () async {
+                final added = await cart.addItem(product);
+
+                if (!context.mounted) {
+                  return;
+                }
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('${product.name} sepete eklendi'),
+                    content: Text(
+                      added
+                          ? '${product.name} sepete eklendi'
+                          : (cart.error ?? 'Sepete eklenemedi'),
+                    ),
                     behavior: SnackBarBehavior.floating,
                     duration: const Duration(seconds: 2),
-                    action: SnackBarAction(
-                      label: 'Sepete Git',
-                      onPressed: () => _goToCart(context),
-                    ),
                   ),
                 );
               },
@@ -180,7 +177,11 @@ class ProductDetailPage extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              child: Text(inCart ? 'Tekrar Ekle · Sepette ${cart.totalItems} ürün' : 'Sepete Ekle'),
+              child: Text(
+                inCart
+                    ? 'Tekrar Ekle · Sepette ${cart.totalItems} ürün'
+                    : 'Sepete Ekle',
+              ),
             ),
           ),
         ),
@@ -190,10 +191,10 @@ class ProductDetailPage extends StatelessWidget {
 
   String _formatKey(String key) {
     final words = key.split(RegExp(r'[_\s]'));
-    return words.map((w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : '').join(' ');
-  }
-
-  void _goToCart(BuildContext context) {
-    Navigator.pushNamed(context, '/cart');
+    return words
+        .map(
+          (w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : '',
+        )
+        .join(' ');
   }
 }

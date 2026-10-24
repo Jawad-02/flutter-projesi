@@ -44,11 +44,14 @@
 | T-203 | Catalog API v1 | done | List/detail/filter/sort/paginate + 11 Pest tests |
 | T-204 | Flutter catalog integration | done | App fetches backend products + category chips |
 
-## Later — Phases 3–4
-| T-301 | Auth + addresses + wishlist API | todo | Sanctum auth flows + tests |
-| T-302 | Cart/checkout/orders API | todo | Guest cart, coupons, shipping, tax, orders, manual payment |
-| T-303 | Admin order/customer/coupon/shipping | todo | Full order lifecycle in Filament |
-| T-304 | Flutter cart/checkout/orders/profile | todo | End-to-end purchase flow |
+## Phase 3 — completed: commerce
+
+| T-301 | Auth + addresses + wishlist API | done | Sanctum auth flows + tests |
+| T-302 | Cart/checkout/orders API | done | Guest cart + merge, coupons, shipping, tax, orders, stock, manual payment |
+| T-303 | Admin order/customer/coupon/shipping | done | Order status actions, customers, coupons, shipping |
+| T-304 | Flutter auth/cart/checkout/orders/profile | done | Login/register, server cart, checkout, orders; address/wishlist UI deferred |
+
+## Later — Phase 4
 | T-401 | Reviews/wishlist/notifications/search | todo | API + Flutter screens |
 | T-402 | Reports/roles/settings/activity log | todo | Admin reports + permissions |
 | T-403 | Localization + responsive | todo | TR/EN, phone/tablet layouts |
@@ -61,6 +64,7 @@
 | T-001..T-008 | Phase 0: `.agents` refactor, brand spec, docs, skills, hygiene | 2026-10-24 | `make analyze` 0; Pest 2/2; 5 skills listed |
 | T-101..T-106 | Phase 1: brand assets/theme, Filament, Sanctum, R2/Neon, roles | 2026-10-24 | Flutter APK built; admin login 200; Pest 5/5 |
 | T-201..T-204 | Phase 2: catalog schema/admin/API + Flutter integration | 2026-10-24 | 20 products seeded; Pest 11/11; app loads backend catalog |
+| T-301..T-304 | Phase 3: auth, carts, checkout, orders, admin commerce | 2026-10-24 | Pest 23/23; Flutter APK builds; manual guest cart/login UI verified |
 
 ## Planning log
 
@@ -73,3 +77,4 @@
 | 2026-10-24 | vendor/node_modules correction | Composer autoload requires `backend/vendor` in place; keep deps in project, caches on Storage |
 | 2026-10-24 | Phase 1 complete | Brand assets/fonts/theme, icons/splash, bundle id, Filament/Sanctum/Shield/R2, API health, admin seed |
 | 2026-10-24 | Phase 2 complete | Catalog schema/admin/API, 20 demo products, Flutter backend integration |
+| 2026-10-24 | Phase 3 complete | Auth/cart/checkout/orders, coupons/shipping/tax, admin commerce; wishlist/address UI deferred |
