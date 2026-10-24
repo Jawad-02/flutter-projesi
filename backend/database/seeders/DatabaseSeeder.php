@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             CatalogSeeder::class,
             ShippingMethodSeeder::class,
             CouponSeeder::class,
+            ReviewSeeder::class,
+            ShieldPermissionSeeder::class,
         ]);
     }
 }

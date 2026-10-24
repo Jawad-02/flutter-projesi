@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'models/cart_model.dart';
 import 'pages/account_page.dart';
@@ -57,6 +58,9 @@ class _MainAppState extends State<MainApp> {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'RedEast Store',
+          localizationsDelegates: GlobalMaterialLocalizations.delegates,
+          supportedLocales: const [Locale('tr'), Locale('en')],
+          locale: const Locale('tr'),
           theme: RedEastTheme.light(),
           darkTheme: RedEastTheme.dark(),
           themeMode: ThemeMode.system,

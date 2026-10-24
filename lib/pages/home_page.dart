@@ -17,7 +17,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Future<List<Product>> _productsFuture;
   late Future<List<Category>> _categoriesFuture;
+  final TextEditingController _searchController = TextEditingController();
   String? _selectedCategory;
+  String? _searchQuery;
 
   @override
   void initState() {
@@ -26,10 +28,19 @@ class _HomePageState extends State<HomePage> {
     _productsFuture = ApiService.fetchProducts();
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   Future<void> _refresh() async {
     setState(() {
       _categoriesFuture = ApiService.fetchCategories();
-      _productsFuture = ApiService.fetchProducts(category: _selectedCategory);
+      _productsFuture = ApiService.fetchProducts(
+        category: _selectedCategory,
+        search: _searchQuery,
+      );
     });
     await _productsFuture;
   }
@@ -37,7 +48,20 @@ class _HomePageState extends State<HomePage> {
   void _selectCategory(String? slug) {
     setState(() {
       _selectedCategory = slug;
-      _productsFuture = ApiService.fetchProducts(category: slug);
+      _productsFuture = ApiService.fetchProducts(
+        category: slug,
+        search: _searchQuery,
+      );
+    });
+  }
+
+  void _applySearch(String value) {
+    setState(() {
+      _searchQuery = value.trim().isEmpty ? null : value.trim();
+      _productsFuture = ApiService.fetchProducts(
+        category: _selectedCategory,
+        search: _searchQuery,
+      );
     });
   }
 
@@ -52,6 +76,29 @@ class _HomePageState extends State<HomePage> {
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(child: _BannerWidget()),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            sliver: SliverToBoxAdapter(
+              child: TextField(
+                controller: _searchController,
+                textInputAction: TextInputAction.search,
+                onSubmitted: _applySearch,
+                decoration: InputDecoration(
+                  hintText: 'Ürün ara',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: _searchController.text.isEmpty
+                      ? null
+                      : IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () {
+                            _searchController.clear();
+                            _applySearch('');
+                          },
+                        ),
+                ),
+              ),
+            ),
+          ),
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
             sliver: SliverToBoxAdapter(
@@ -109,11 +156,13 @@ class _HomePageState extends State<HomePage> {
               }
               final products = snapshot.data!;
               final cart = CartModelScope.of(context);
+              final width = MediaQuery.sizeOf(context).width;
+              final columns = width >= 1000 ? 4 : (width >= 640 ? 3 : 2);
               return SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
                 sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: columns,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,
                     childAspectRatio: 0.68,

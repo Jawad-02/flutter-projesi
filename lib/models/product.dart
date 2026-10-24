@@ -16,6 +16,8 @@ class Product {
   final String? brandName;
   final bool inStock;
   final bool isFeatured;
+  final double? rating;
+  final int reviewsCount;
   final List<ProductVariant> variants;
 
   const Product({
@@ -34,6 +36,8 @@ class Product {
     this.brandName,
     this.inStock = true,
     this.isFeatured = false,
+    this.rating,
+    this.reviewsCount = 0,
     this.variants = const [],
   });
 
@@ -69,6 +73,8 @@ class Product {
       brandName: brand is Map ? brand['name'] as String? : null,
       inStock: json['in_stock'] as bool? ?? true,
       isFeatured: json['is_featured'] as bool? ?? false,
+      rating: (json['rating'] as num?)?.toDouble(),
+      reviewsCount: (json['reviews_count'] as num?)?.toInt() ?? 0,
       variants: rawVariants is List
           ? rawVariants
                 .map(

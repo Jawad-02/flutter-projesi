@@ -128,7 +128,8 @@ SESSION_DRIVER=database
 
 Live now: `/health`, catalog endpoints, `/auth/*`, `/cart` + `/cart/items` +
 `/cart/merge`, `/shipping/methods`, `/coupons/validate`, `/checkout/quote`,
-`/orders` (+ detail/cancel), `/addresses`, `/wishlist`.
+`/orders` (+ detail/cancel), `/addresses`, `/wishlist`, `/products/{slug}/reviews`,
+`/notifications` (+ read/read-all).
 
 ```text
 POST   /auth/register
@@ -236,14 +237,16 @@ vendor/bin/pint --dirty --format agent
 - `vendor/` and `node_modules/` stay inside the project: Composer autoload
   resolves relative to `vendor/`, so moving it breaks Artisan. Both are ignored
   by Git; caches belong on Storage.
-- Tests: Pest 23/23 (auth, cart/merge, checkout/orders, stock, idempotency,
-  addresses, wishlist, catalog, admin commerce pages, health).
+- Phase 4 added review moderation, database/mail order notifications, commerce
+  dashboard stats, review admin resource, and admin/staff permission seeding.
+- Tests: Pest 26/26 (auth, cart/merge, checkout/orders, stock, idempotency,
+  addresses, wishlist, reviews, notifications, catalog, admin commerce, health).
 
 ## 11. Known gaps / next work
 
-1. Reviews/notifications/search/reports/settings/activity log (Phase 4).
+1. Settings + activity log, and CSV reports (stats widget is in place).
 2. Guest checkout and order lookup for guests (currently auth required).
-3. Assign Shield permissions to `admin`/`staff` roles (super_admin bypasses).
+3. ARB translations for the Flutter app (delegates are wired; UI Turkish).
 4. Add real Neon/R2 credentials in `.env` and verify the remote disks.
 5. Replace the seeded local password before any deployment.
 6. Replace demo catalog images (wantapi URLs) with R2 media.

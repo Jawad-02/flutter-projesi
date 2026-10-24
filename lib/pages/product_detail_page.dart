@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../models/product.dart';
 import '../main.dart';
+import '../services/api_client.dart';
+import '../services/auth_scope.dart';
+import 'login_page.dart';
+import 'reviews_page.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final Product product;
@@ -15,7 +19,46 @@ class ProductDetailPage extends StatelessWidget {
     cart.quantityOf(product.id);
 
     return Scaffold(
-      appBar: AppBar(title: Text(product.name)),
+      appBar: AppBar(
+        title: Text(product.name),
+        actions: [
+          IconButton(
+            tooltip: 'Favorilere ekle',
+            icon: const Icon(Icons.favorite_border),
+            onPressed: () async {
+              final auth = AuthScope.of(context);
+
+              if (!auth.isAuthenticated) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LoginPage()),
+                );
+                return;
+              }
+
+              try {
+                await ApiClient.instance.post('/wishlist/${product.slug}');
+
+                if (!context.mounted) {
+                  return;
+                }
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Favorilere eklendi.')),
+                );
+              } catch (error) {
+                if (!context.mounted) {
+                  return;
+                }
+
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(error.toString())));
+              }
+            },
+          ),
+        ],
+      ),
       body: ListView(
         children: [
           Container(
@@ -58,7 +101,34 @@ class ProductDetailPage extends StatelessWidget {
                     height: 1.4,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    if (product.rating != null) ...[
+                      const Icon(
+                        Icons.star,
+                        size: 18,
+                        color: Color(0xFFB7791F),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${product.rating} (${product.reviewsCount})',
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(width: 12),
+                    ],
+                    TextButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ReviewsPage(product: product),
+                        ),
+                      ),
+                      child: const Text('Yorumları Gör'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
                 Text(
                   product.price,
                   style: const TextStyle(

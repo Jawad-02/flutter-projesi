@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import '../main.dart' show CartModelScope;
 import '../services/auth_scope.dart';
 import 'login_page.dart';
+import 'notifications_page.dart';
 import 'orders_page.dart';
 import 'register_page.dart';
+import 'wishlist_page.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -73,6 +75,32 @@ class AccountPage extends StatelessWidget {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const OrdersPage()),
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Card(
+          child: ListTile(
+            leading: const Icon(Icons.favorite_border),
+            title: const Text('Favorilerim'),
+            subtitle: const Text('Kaydettiğiniz ürünler'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const WishlistPage()),
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Card(
+          child: ListTile(
+            leading: const Icon(Icons.notifications_none),
+            title: const Text('Bildirimler'),
+            subtitle: const Text('Sipariş ve hesap bildirimleri'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const NotificationsPage()),
             ),
           ),
         ),

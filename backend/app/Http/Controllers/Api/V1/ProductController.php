@@ -15,7 +15,9 @@ class ProductController extends Controller
     {
         $query = Product::query()
             ->active()
-            ->with(['category', 'brand', 'variants', 'images']);
+            ->with(['category', 'brand', 'variants', 'images'])
+            ->withAvg(['reviews' => fn (Builder $q) => $q->where('is_approved', true)], 'rating')
+            ->withCount(['reviews' => fn (Builder $q) => $q->where('is_approved', true)]);
 
         $this->applyFilters($query, $request);
 
@@ -36,6 +38,8 @@ class ProductController extends Controller
         abort_unless($product->is_active, 404);
 
         $product->load(['category', 'brand', 'variants', 'images']);
+        $product->loadAvg(['reviews' => fn (Builder $q) => $q->where('is_approved', true)], 'rating');
+        $product->loadCount(['reviews' => fn (Builder $q) => $q->where('is_approved', true)]);
 
         return new ProductResource($product);
     }

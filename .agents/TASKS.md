@@ -51,11 +51,12 @@
 | T-303 | Admin order/customer/coupon/shipping | done | Order status actions, customers, coupons, shipping |
 | T-304 | Flutter auth/cart/checkout/orders/profile | done | Login/register, server cart, checkout, orders; address/wishlist UI deferred |
 
-## Later — Phase 4
-| T-401 | Reviews/wishlist/notifications/search | todo | API + Flutter screens |
-| T-402 | Reports/roles/settings/activity log | todo | Admin reports + permissions |
-| T-403 | Localization + responsive | todo | TR/EN, phone/tablet layouts |
-| T-404 | Tests/coverage/CI/security/perf | todo | Pest + Flutter tests, coverage, CI green |
+## Phase 4 — in progress
+
+| T-401 | Reviews/wishlist/notifications/search | done | Review moderation + API; wishlist/notifications UI; search field |
+| T-402 | Reports/roles/settings/activity log | in-progress | Stats widget + permission seeding done; settings/activity log pending |
+| T-403 | Localization + responsive | in-progress | Responsive grids + Flutter delegates done; ARB translations pending |
+| T-404 | Tests/coverage/CI/security/perf | done | Pest 26/26, Flutter 5/5, coverage run, GitHub Actions added |
 
 ## Done
 
@@ -65,6 +66,7 @@
 | T-101..T-106 | Phase 1: brand assets/theme, Filament, Sanctum, R2/Neon, roles | 2026-10-24 | Flutter APK built; admin login 200; Pest 5/5 |
 | T-201..T-204 | Phase 2: catalog schema/admin/API + Flutter integration | 2026-10-24 | 20 products seeded; Pest 11/11; app loads backend catalog |
 | T-301..T-304 | Phase 3: auth, carts, checkout, orders, admin commerce | 2026-10-24 | Pest 23/23; Flutter APK builds; manual guest cart/login UI verified |
+| T-401..T-404 | Phase 4: reviews, notifications, search, wishlist UI, stats, tests/CI | 2026-10-24 | Pest 26/26; Flutter 5/5; CI added |
 
 ## Planning log
 
@@ -78,3 +80,4 @@
 | 2026-10-24 | Phase 1 complete | Brand assets/fonts/theme, icons/splash, bundle id, Filament/Sanctum/Shield/R2, API health, admin seed |
 | 2026-10-24 | Phase 2 complete | Catalog schema/admin/API, 20 demo products, Flutter backend integration |
 | 2026-10-24 | Phase 3 complete | Auth/cart/checkout/orders, coupons/shipping/tax, admin commerce; wishlist/address UI deferred |
+| 2026-10-24 | Phase 4 progress | Reviews, notifications, wishlist/search UI, stats, permissions, tests/CI; ARB + settings/activity log pending |

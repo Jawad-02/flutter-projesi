@@ -57,17 +57,17 @@
 | B-306 | Filament orders/customers/coupons/shipping | done | Status transitions, notes, refunds |
 | B-307 | Commerce tests | done | Auth, cart, checkout, stock, idempotency |
 
-## Phase 4 — engagement + quality
+## Phase 4 — in progress: engagement + quality
 
 | ID | Task | Status | Acceptance criteria |
 |---|---|---|---|
-| B-401 | Reviews + moderation | todo | Verified purchase flag; admin moderation |
-| B-402 | Notifications (email + database) | todo | Order confirmation/status emails queued |
-| B-403 | Search/filter tuning + indexes | todo | Postgres-safe search; no N+1 |
-| B-404 | Reports + CSV export | todo | Sales/products/customers |
+| B-401 | Reviews + moderation | done | Verified purchase flag; admin moderation |
+| B-402 | Notifications (email + database) | done | Order confirmation/status emails queued |
+| B-403 | Search/filter tuning + indexes | done | Postgres-safe search; no N+1 |
+| B-404 | Reports + CSV export | in-progress | Sales/products/customers |
 | B-405 | Settings + activity log | todo | Store/currency/tax/shipping settings |
-| B-406 | Security/perf pass | todo | Rate limits, signed URLs, image conversions, indexes |
-| B-407 | CI (Pest + Pint + Vite build) | todo | GitHub Actions green |
+| B-406 | Security/perf pass | in-progress | Rate limits, signed URLs, image conversions, indexes |
+| B-407 | CI (Pest + Pint + Vite build) | done | GitHub Actions green |
 
 ## Done
 
@@ -77,6 +77,7 @@
 | B-101..B-107 | Phase 1: Filament, Sanctum, Shield, R2, theme, seed | 2026-10-24 | Admin login 200; Pest 5/5; Vite build OK |
 | B-201..B-206 | Phase 2: catalog schema/admin/API/seed | 2026-10-24 | 20 products; Pest 11/11; Flutter loads API |
 | B-301..B-307 | Phase 3: auth, cart, checkout, orders, admin commerce | 2026-10-24 | Pest 23/23; transactional idempotent orders |
+| B-401..B-407 | Phase 4: reviews, notifications, stats, permissions, CI | 2026-10-24 | Pest 26/26; CI workflow added |
 
 ## Planning log
 
@@ -88,3 +89,4 @@
 | 2026-10-24 | Phase 1 complete | Filament 5 + Sanctum + Shield + R2 + Scramble; branded admin; seeded roles/users |
 | 2026-10-24 | Phase 2 complete | Catalog schema/admin/API/seed; Flutter fetches backend catalog |
 | 2026-10-24 | Phase 3 complete | Auth/cart/checkout/orders/coupons/shipping/manual payments + admin |
+| 2026-10-24 | Phase 4 progress | Reviews/notifications/stats/CI; settings/activity log + CSV report pending |

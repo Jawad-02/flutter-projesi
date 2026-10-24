@@ -47,6 +47,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Wishlist::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

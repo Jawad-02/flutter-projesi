@@ -40,5 +40,6 @@ test('admin order, coupon, shipping, and customer pages render', function () {
     $this->get('/admin/orders/'.$order->number)->assertOk();
     $this->get('/admin/coupons')->assertOk();
     $this->get('/admin/shipping-methods')->assertOk();
+    $this->get('/admin/reviews')->assertOk();
     $this->get('/admin/users')->assertOk();
 });

@@ -136,6 +136,7 @@ reviews, and notifications backed by `/api/v1`.
     `X-Cart-Token`)
   - `/api/v1/shipping/methods`, `/coupons/validate`, `/checkout/quote`
   - `/api/v1/orders` (+ detail/cancel), `/addresses`, `/wishlist`
+  - `/api/v1/products/{slug}/reviews` (GET/POST), `/api/v1/notifications`
 - Flutter now calls the Laravel API (`ApiConfig`), not `wantapi.com` directly.
 
 ## 7. Commands
@@ -184,8 +185,11 @@ php artisan migrate --seed
 - Flutter now has auth (login/register/profile), server-backed cart, checkout
   with shipping/coupon/manual payment, and an orders list.
 - Guest carts merge into the user cart on login; checkout requires auth.
-- Tests: Pest 23/23 (auth, cart, checkout/orders/idempotency, addresses,
-  wishlist, admin commerce pages, catalog, health).
+- Phase 4 added reviews + moderation, database/mail notifications, dashboard
+  commerce stats, staff/admin permission seeding, Flutter wishlist/notifications
+  UI, product search, responsive grids, Flutter unit/widget tests, coverage and
+  GitHub Actions CI.
+- Tests: Pest 26/26 and Flutter 5/5; `make analyze` exit 0.
 
 ## 9. Planned feature phases
 
@@ -195,27 +199,26 @@ php artisan migrate --seed
 | 1 | ✅ Brand assets/theme, Filament + Sanctum, Neon/R2 env, DB foundation |
 | 2 | ✅ Catalog schema, admin CRUD, API, seed data, Flutter catalog |
 | 3 | ✅ Auth, cart, checkout, orders, inventory, coupons, shipping/tax, manual payments |
-| 4 | Reviews, wishlist UI, notifications, search, reports, roles, localization, tests/CI |
+| 4 | ✅ Reviews, wishlist/notifications UI, search, stats, permissions, tests/CI (ARB translation + settings/activity log remain) |
 
 ## 10. Known issues / technical debt
 
 | # | Issue | Location | Impact |
 |---|---|---|---|
-| 1 | Widget test expects `Home`/`Cart`; UI renders `Ana Sayfa`/`Sepet` | `test/widget_test.dart:12` | `flutter test` fails |
-| 2 | Detail button label uses `cart.totalItems` | `product_detail_page.dart` | Misleading |
+| 1 | Detail button label uses `cart.totalItems` | `product_detail_page.dart` | Misleading |
+| 2 | Flutter auth/cart/checkout widget/integration tests still thin | `test/` | 5 tests; coverage gap |
 | 3 | TLS accepts any certificate in the legacy catalog client | `http_client_io.dart:9` | Demo only; remove before production |
 | 4 | `dart:html` deprecated | `http_client_web.dart:2` | 2 accepted analyzer infos |
-| 5 | No Flutter auth/cart/checkout widget or integration tests yet | `test/` | Coverage gap; Phase 4 |
-| 6 | Guest checkout not supported | `/orders` requires Sanctum | Login required before ordering |
-| 7 | Wishlist and address-book UI deferred | backend APIs ready | Phase 4 |
-| 8 | Orders list has no separate detail screen | `orders_page.dart` | Phase 4 |
-| 9 | Staff roles still need Shield permission assignment | `app/Policies` | `super_admin` bypass works; assign permissions for staff |
-| 10 | Demo images are external wantapi URLs | `CatalogSeeder` | Replace with R2 media before release |
-| 11 | Admin price inputs are labeled in cents | `ProductForm` | Usability; add a money input later |
-| 12 | API base URL defaults to `10.0.2.2` for the emulator | `lib/config/api_config.dart` | Physical device needs `--dart-define=API_BASE_URL=...` |
-| 13 | iOS build impossible on Linux | `ios/` | Environment |
-| 14 | Emulator is slow under host load | AVD | Use 480x1040/4-vCPU AVD; prefer `make app` |
-| 15 | `make run` rebuilds via Gradle (~10 min first time) | Makefile | Use `make app` for quick checks |
+| 5 | Guest checkout not supported | `/orders` requires Sanctum | Login required before ordering |
+| 6 | Address-book UI still deferred (wishlist UI is done) | backend APIs ready | Follow-up |
+| 7 | Orders list has no separate detail screen | `orders_page.dart` | Follow-up |
+| 8 | Localization only wires Flutter delegates; ARB translations pending | `lib/`, `pubspec.yaml` | UI remains Turkish |
+| 9 | Demo images are external wantapi URLs | `CatalogSeeder` | Replace with R2 media before release |
+| 10 | Admin price inputs are labeled in cents | `ProductForm` | Usability; add a money input later |
+| 11 | API base URL defaults to `10.0.2.2` for the emulator | `lib/config/api_config.dart` | Physical device needs `--dart-define=API_BASE_URL=...` |
+| 12 | iOS build impossible on Linux | `ios/` | Environment |
+| 13 | Emulator is slow under host load | AVD | Use 480x1040/4-vCPU AVD; prefer `make app` |
+| 14 | `make run` rebuilds via Gradle (~10 min first time) | Makefile | Use `make app` for quick checks |
 
 Do not fix these unless they are in `TASKS.md`.
 

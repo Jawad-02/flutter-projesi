@@ -9,6 +9,8 @@ use App\Models\Payment;
 use App\Models\ProductVariant;
 use App\Models\ShippingMethod;
 use App\Models\User;
+use App\Notifications\OrderPlacedNotification;
+use App\Notifications\OrderStatusUpdatedNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -32,7 +34,7 @@ class OrderService
             }
         }
 
-        return DB::transaction(function () use ($user, $cart, $data) {
+        $order = DB::transaction(function () use ($user, $cart, $data) {
             $cart->load('items.variant.product');
 
             if ($cart->items->isEmpty()) {
@@ -154,6 +156,10 @@ class OrderService
 
             return $order->load(['items', 'payments']);
         });
+
+        $user?->notify(new OrderPlacedNotification($order));
+
+        return $order;
     }
 
     public function markPaid(Order $order, ?string $transactionId = null): Order
@@ -177,7 +183,10 @@ class OrderService
             ]);
         });
 
-        return $order->fresh(['items', 'payments']);
+        $order = $order->fresh(['items', 'payments']);
+        $order->user?->notify(new OrderStatusUpdatedNotification($order, 'Ödendi'));
+
+        return $order;
     }
 
     public function cancel(Order $order): Order
@@ -214,7 +223,10 @@ class OrderService
             $order->payments()->where('status', 'pending')->update(['status' => 'cancelled']);
         });
 
-        return $order->fresh(['items', 'payments']);
+        $order = $order->fresh(['items', 'payments']);
+        $order->user?->notify(new OrderStatusUpdatedNotification($order, 'İptal edildi'));
+
+        return $order;
     }
 
     public function refund(Order $order): Order
@@ -232,7 +244,10 @@ class OrderService
             $order->payments()->update(['status' => 'refunded']);
         });
 
-        return $order->fresh(['items', 'payments']);
+        $order = $order->fresh(['items', 'payments']);
+        $order->user?->notify(new OrderStatusUpdatedNotification($order, 'İade edildi'));
+
+        return $order;
     }
 
     private function nextNumber(): string

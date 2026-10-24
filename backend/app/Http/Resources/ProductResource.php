@@ -30,6 +30,10 @@ class ProductResource extends JsonResource
             'specs' => $this->specs ?? [],
             'is_featured' => $this->is_featured,
             'in_stock' => $this->hasStock(),
+            'rating' => $this->reviews_avg_rating !== null
+                ? round((float) $this->reviews_avg_rating, 1)
+                : null,
+            'reviews_count' => $this->whenCounted('reviews'),
             'category' => $this->whenLoaded('category', fn () => new CategoryResource($this->category)),
             'brand' => $this->whenLoaded('brand', fn () => $this->brand ? new BrandResource($this->brand) : null),
             'variants' => ProductVariantResource::collection($this->whenLoaded('variants')),
