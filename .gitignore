@@ -30,8 +30,14 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
+/build
+/local.mk
 /coverage/
+/backend/vendor
+/backend/node_modules
+/backend/.env
+/backend/database/*.sqlite
+/backend/database/*.sqlite-journal
 
 # Symbolication related
 app.*.symbols
