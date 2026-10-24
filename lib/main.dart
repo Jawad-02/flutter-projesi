@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'models/cart_model.dart';
 import 'pages/cart_page.dart';
 import 'pages/home_page.dart';
+import 'theme/redeast_theme.dart';
 
 void main() {
   runApp(const MainApp());
@@ -36,32 +37,10 @@ class _MainAppState extends State<MainApp> {
       cart: _cart,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Mağaza',
-        theme: ThemeData(
-          useMaterial3: true,
-          scaffoldBackgroundColor: const Color(0xFFF5F5F7),
-          colorSchemeSeed: const Color(0xFF1D1D1F),
-          brightness: Brightness.light,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xFFF5F5F7),
-            foregroundColor: Color(0xFF1D1D1F),
-            surfaceTintColor: Colors.transparent,
-            elevation: 0,
-            centerTitle: true,
-            titleTextStyle: TextStyle(
-              color: Color(0xFF1D1D1F),
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          filledButtonTheme: FilledButtonThemeData(
-            style: FilledButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-            ),
-          ),
-        ),
+        title: 'RedEast Store',
+        theme: RedEastTheme.light(),
+        darkTheme: RedEastTheme.dark(),
+        themeMode: ThemeMode.system,
         home: ListenableBuilder(
           listenable: _cart,
           builder: (context, _) => Scaffold(
@@ -72,9 +51,6 @@ class _MainAppState extends State<MainApp> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
               onTap: (index) => setState(() => _currentIndex = index),
-              backgroundColor: Colors.white,
-              selectedItemColor: const Color(0xFF1D1D1F),
-              unselectedItemColor: Colors.grey.shade400,
               type: BottomNavigationBarType.fixed,
               elevation: 0,
               selectedFontSize: 12,

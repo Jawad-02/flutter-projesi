@@ -1,4 +1,4 @@
-package com.example.flutter_project
+package agency.redeast.store
 
 import io.flutter.embedding.android.FlutterActivity
 
