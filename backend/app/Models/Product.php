@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Support\MediaUrl;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -91,15 +91,11 @@ class Product extends Model
 
     public function primaryImageUrl(): ?string
     {
-        if ($this->image_url) {
-            return $this->image_url;
-        }
-
         if ($this->image_path) {
-            return Storage::disk(config('catalog.media_disk'))->url($this->image_path);
+            return MediaUrl::for($this->image_path);
         }
 
-        return null;
+        return $this->image_url;
     }
 
     public function formattedPrice(): string

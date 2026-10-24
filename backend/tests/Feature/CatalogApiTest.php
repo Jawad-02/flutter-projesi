@@ -26,26 +26,26 @@ test('catalog lists active products with pagination', function () {
 test('catalog can filter by category and search', function () {
     $this->getJson('/api/v1/products?category=phones&per_page=50')
         ->assertOk()
-        ->assertJsonPath('meta.total', 5);
+        ->assertJsonPath('meta.total', 4);
 
-    $this->getJson('/api/v1/products?search=macbook&per_page=50')
+    $this->getJson('/api/v1/products?search=nova&per_page=50')
         ->assertOk()
         ->assertJsonPath('meta.total', 4);
 });
 
 test('catalog product detail is available by slug', function () {
-    $this->getJson('/api/v1/products/iphone-15-pro')
+    $this->getJson('/api/v1/products/nova-x')
         ->assertOk()
-        ->assertJsonPath('data.name', 'iPhone 15 Pro')
-        ->assertJsonPath('data.price', '$999.00')
+        ->assertJsonPath('data.name', 'RedEast Nova X')
+        ->assertJsonPath('data.price', '$899.00')
         ->assertJsonPath('data.category.slug', 'phones')
         ->assertJsonCount(1, 'data.variants');
 });
 
 test('inactive product detail returns not found', function () {
-    Product::where('slug', 'iphone-15-pro')->update(['is_active' => false]);
+    Product::where('slug', 'nova-x')->update(['is_active' => false]);
 
-    $this->getJson('/api/v1/products/iphone-15-pro')->assertNotFound();
+    $this->getJson('/api/v1/products/nova-x')->assertNotFound();
 });
 
 test('categories and brands endpoints return active records', function () {
@@ -56,5 +56,5 @@ test('categories and brands endpoints return active records', function () {
     $this->getJson('/api/v1/brands')
         ->assertOk()
         ->assertJsonCount(1, 'data')
-        ->assertJsonPath('data.0.slug', 'apple');
+        ->assertJsonPath('data.0.slug', 'red-east');
 });

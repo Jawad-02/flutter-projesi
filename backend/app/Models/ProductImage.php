@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Support\MediaUrl;
 use Database\Factories\ProductImageFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
 
 class ProductImage extends Model
 {
@@ -35,12 +35,8 @@ class ProductImage extends Model
 
     public function resolvedUrl(): ?string
     {
-        if ($this->url && (str_starts_with($this->url, 'http://') || str_starts_with($this->url, 'https://'))) {
-            return $this->url;
-        }
-
         if ($this->path) {
-            return Storage::disk(config('catalog.media_disk'))->url($this->path);
+            return MediaUrl::for($this->path);
         }
 
         return $this->url;

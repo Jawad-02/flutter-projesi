@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../main.dart' show CartModelScope;
 import '../services/api_client.dart';
 import '../services/auth_scope.dart';
+import '../widgets/redeast_ui.dart';
 import 'orders_page.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -204,7 +205,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     final cart = CartModelScope.of(context);
-    final theme = Theme.of(context);
 
     if (cart.items.isEmpty) {
       return Scaffold(
@@ -215,129 +215,136 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Ödeme')),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
-          children: [
-            Text('Teslimat bilgileri', style: theme.textTheme.titleLarge),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Ad soyad'),
-              validator: _required,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: 'E-posta'),
-              validator: (value) => (value == null || !value.contains('@'))
-                  ? 'Geçerli bir e-posta girin.'
-                  : null,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(labelText: 'Telefon'),
-              validator: _required,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _line1Controller,
-              decoration: const InputDecoration(labelText: 'Adres'),
-              validator: _required,
-            ),
-            const SizedBox(height: 10),
-            Row(
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 760),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
               children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _cityController,
-                    decoration: const InputDecoration(labelText: 'Şehir'),
-                    validator: _required,
-                  ),
+                const RedEastSectionHeader(title: 'Teslimat bilgileri'),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(labelText: 'Ad soyad'),
+                  validator: _required,
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: TextFormField(
-                    controller: _postalController,
-                    decoration: const InputDecoration(labelText: 'Posta kodu'),
-                    validator: _required,
-                  ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(labelText: 'E-posta'),
+                  validator: (value) => (value == null || !value.contains('@'))
+                      ? 'Geçerli bir e-posta girin.'
+                      : null,
                 ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Text('Kargo', style: theme.textTheme.titleLarge),
-            const SizedBox(height: 10),
-            DropdownButtonFormField<int>(
-              key: ValueKey(_shippingMethodId),
-              initialValue: _shippingMethodId,
-              decoration: const InputDecoration(labelText: 'Kargo yöntemi'),
-              items: _shippingMethods
-                  .map(
-                    (method) => DropdownMenuItem<int>(
-                      value: method['id'] as int,
-                      child: Text(
-                        '${method['name']} · ${_money(method['price_cents'] as int? ?? 0)}',
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _phoneController,
+                  keyboardType: TextInputType.phone,
+                  decoration: const InputDecoration(labelText: 'Telefon'),
+                  validator: _required,
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _line1Controller,
+                  decoration: const InputDecoration(labelText: 'Adres'),
+                  validator: _required,
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _cityController,
+                        decoration: const InputDecoration(labelText: 'Şehir'),
+                        validator: _required,
                       ),
                     ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                setState(() => _shippingMethodId = value);
-                _fetchQuote();
-              },
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _couponController,
-                    decoration: const InputDecoration(
-                      labelText: 'Kupon kodu',
-                      hintText: 'WELCOME10',
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _postalController,
+                        decoration: const InputDecoration(
+                          labelText: 'Posta kodu',
+                        ),
+                        validator: _required,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                FilledButton.tonal(
-                  onPressed: _loading ? null : _fetchQuote,
-                  child: const Text('Uygula'),
+                const SizedBox(height: 24),
+                const RedEastSectionHeader(title: 'Kargo'),
+                const SizedBox(height: 10),
+                DropdownButtonFormField<int>(
+                  key: ValueKey(_shippingMethodId),
+                  initialValue: _shippingMethodId,
+                  decoration: const InputDecoration(labelText: 'Kargo yöntemi'),
+                  items: _shippingMethods
+                      .map(
+                        (method) => DropdownMenuItem<int>(
+                          value: method['id'] as int,
+                          child: Text(
+                            '${method['name']} · ${_money(method['price_cents'] as int? ?? 0)}',
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() => _shippingMethodId = value);
+                    _fetchQuote();
+                  },
                 ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _couponController,
+                        decoration: const InputDecoration(
+                          labelText: 'Kupon kodu',
+                          hintText: 'WELCOME10',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    FilledButton.tonal(
+                      onPressed: _loading ? null : _fetchQuote,
+                      child: const Text('Uygula'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                const RedEastSectionHeader(title: 'Ödeme'),
+                const SizedBox(height: 10),
+                DropdownButtonFormField<String>(
+                  initialValue: _paymentMethod,
+                  decoration: const InputDecoration(labelText: 'Ödeme yöntemi'),
+                  items: const [
+                    DropdownMenuItem(value: 'cod', child: Text('Kapıda ödeme')),
+                    DropdownMenuItem(
+                      value: 'bank_transfer',
+                      child: Text('Havale / EFT'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => _paymentMethod = value);
+                    }
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _notesController,
+                  maxLines: 2,
+                  decoration: const InputDecoration(labelText: 'Sipariş notu'),
+                ),
+                const SizedBox(height: 24),
+                if (_quote != null) _QuoteCard(quote: _quote!),
               ],
             ),
-            const SizedBox(height: 24),
-            Text('Ödeme', style: theme.textTheme.titleLarge),
-            const SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              initialValue: _paymentMethod,
-              decoration: const InputDecoration(labelText: 'Ödeme yöntemi'),
-              items: const [
-                DropdownMenuItem(value: 'cod', child: Text('Kapıda ödeme')),
-                DropdownMenuItem(
-                  value: 'bank_transfer',
-                  child: Text('Havale / EFT'),
-                ),
-              ],
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() => _paymentMethod = value);
-                }
-              },
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _notesController,
-              maxLines: 2,
-              decoration: const InputDecoration(labelText: 'Sipariş notu'),
-            ),
-            const SizedBox(height: 24),
-            if (_quote != null) _QuoteCard(quote: _quote!),
-          ],
+          ),
         ),
       ),
       bottomNavigationBar: SafeArea(
@@ -377,41 +384,39 @@ class _QuoteCard extends StatelessWidget {
     final theme = Theme.of(context);
     final coupon = quote['coupon'];
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            _row('Ara toplam', quote['subtotal_cents'], theme),
-            if ((quote['discount_cents'] as num?)?.toInt() != 0)
-              _row('İndirim', -(quote['discount_cents'] as num).toInt(), theme),
-            _row('Kargo', quote['shipping_cents'], theme),
-            _row('KDV (dahil)', quote['tax_cents'], theme),
-            const Divider(height: 24),
-            Row(
-              children: [
-                Text('Toplam', style: theme.textTheme.titleMedium),
-                const Spacer(),
-                Text(
-                  _money((quote['total_cents'] as num?)?.toInt() ?? 0),
-                  style: theme.textTheme.titleLarge,
-                ),
-              ],
-            ),
-            if (coupon is Map) ...[
-              const SizedBox(height: 6),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Kupon: ${coupon['code']}',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.secondary,
-                  ),
-                ),
+    return RedEastSurface(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          _row('Ara toplam', quote['subtotal_cents'], theme),
+          if ((quote['discount_cents'] as num?)?.toInt() != 0)
+            _row('İndirim', -(quote['discount_cents'] as num).toInt(), theme),
+          _row('Kargo', quote['shipping_cents'], theme),
+          _row('KDV (dahil)', quote['tax_cents'], theme),
+          const Divider(height: 24),
+          Row(
+            children: [
+              Text('Toplam', style: theme.textTheme.titleMedium),
+              const Spacer(),
+              Text(
+                _money((quote['total_cents'] as num?)?.toInt() ?? 0),
+                style: theme.textTheme.titleLarge,
               ),
             ],
+          ),
+          if (coupon is Map) ...[
+            const SizedBox(height: 6),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Kupon: ${coupon['code']}',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.secondary,
+                ),
+              ),
+            ),
           ],
-        ),
+        ],
       ),
     );
   }

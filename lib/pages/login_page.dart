@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../main.dart' show CartModelScope;
 import '../services/auth_scope.dart';
+import '../widgets/redeast_ui.dart';
 import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -69,11 +70,10 @@ class _LoginPageState extends State<LoginPage> {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            Text(
-              'RedEast Store',
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            const SizedBox(height: 6),
+            const Center(child: RedEastLogo(height: 30)),
+            const SizedBox(height: 24),
+            Text('Giriş Yap', style: Theme.of(context).textTheme.headlineLarge),
+            const SizedBox(height: 4),
             Text(
               'Hesabınıza giriş yapın.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(

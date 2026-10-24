@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../models/category.dart';
 import '../models/product.dart';
 import '../services/api_service.dart';
+import '../theme/redeast_theme.dart';
 import '../widgets/product_card.dart';
+import '../widgets/redeast_ui.dart';
 import '../main.dart' show CartModelScope;
 import 'product_detail_page.dart';
 
@@ -75,7 +77,7 @@ class _HomePageState extends State<HomePage> {
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
-          SliverToBoxAdapter(child: _BannerWidget()),
+          const SliverToBoxAdapter(child: _HeroWidget()),
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
             sliver: SliverToBoxAdapter(
@@ -99,16 +101,10 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          const SliverPadding(
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 4),
             sliver: SliverToBoxAdapter(
-              child: Text(
-                'Ürünler',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
+              child: RedEastSectionHeader(title: 'Ürünler'),
             ),
           ),
           SliverToBoxAdapter(
@@ -165,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisCount: columns,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,
-                    childAspectRatio: 0.68,
+                    childAspectRatio: columns == 2 ? 0.60 : 0.68,
                   ),
                   delegate: SliverChildBuilderDelegate((context, index) {
                     final product = products[index];
@@ -273,91 +269,80 @@ class _CategoryChips extends StatelessWidget {
   }
 }
 
-class _BannerWidget extends StatelessWidget {
+class _HeroWidget extends StatelessWidget {
+  const _HeroWidget();
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-      height: 160,
+      margin: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      height: 210,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+        color: RedEastColors.charcoal,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        children: [
+          Positioned(
+            right: -40,
+            top: -40,
+            child: _Dot(size: 190, color: Colors.white.withValues(alpha: 0.04)),
+          ),
+          Positioned(
+            right: 42,
+            bottom: 32,
+            child: _Dot(size: 54, color: RedEastColors.red),
+          ),
+          Positioned(
+            left: 24,
+            top: 24,
+            child: RedEastLogo(height: 26, light: true),
+          ),
+          Positioned(
+            left: 24,
+            right: 24,
+            bottom: 24,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Yeni Ürünler',
+                  style: theme.textTheme.displaySmall?.copyWith(
+                    color: Colors.white,
+                    fontFamily: 'InstrumentSerif',
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'En yeni teknolojiyi keşfedin',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.white70,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.network(
-              'https://wantapi.com/assets/banner.png',
-              fit: BoxFit.cover,
-              webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
-              errorBuilder: (_, _, _) => Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF1D1D1F), Color(0xFF3A3A3C)],
-                  ),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Öne Çıkan Ürünler',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withValues(alpha: 0.3),
-                  ],
-                ),
-              ),
-            ),
-            const Positioned(
-              left: 20,
-              bottom: 16,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Yeni Ürünler',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 26,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    'En yeni teknolojiyi keşfedin',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+    );
+  }
+}
+
+class _Dot extends StatelessWidget {
+  final double size;
+  final Color color;
+
+  const _Dot({required this.size, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
     );
   }
 }

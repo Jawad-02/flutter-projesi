@@ -80,10 +80,10 @@ class CatalogSeeder extends Seeder
                 );
 
                 ProductImage::updateOrCreate(
-                    ['product_id' => $product->id, 'url' => $data['image_url']],
+                    ['product_id' => $product->id, 'sort_order' => 0],
                     [
+                        'url' => $data['image_url'],
                         'alt' => $data['name'],
-                        'sort_order' => 0,
                     ],
                 );
             }

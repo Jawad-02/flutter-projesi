@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Support\MediaUrl;
 use Database\Factories\CategoryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
 
 class Category extends Model
 {
@@ -59,14 +59,6 @@ class Category extends Model
 
     public function resolvedImageUrl(): ?string
     {
-        if (! $this->image_url) {
-            return null;
-        }
-
-        if (str_starts_with($this->image_url, 'http://') || str_starts_with($this->image_url, 'https://')) {
-            return $this->image_url;
-        }
-
-        return Storage::disk(config('catalog.media_disk'))->url($this->image_url);
+        return MediaUrl::for($this->image_url);
     }
 }

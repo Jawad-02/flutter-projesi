@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Support\MediaUrl;
 use Database\Factories\BrandFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
 
 class Brand extends Model
 {
@@ -45,14 +45,6 @@ class Brand extends Model
 
     public function resolvedLogoUrl(): ?string
     {
-        if (! $this->logo_url) {
-            return null;
-        }
-
-        if (str_starts_with($this->logo_url, 'http://') || str_starts_with($this->logo_url, 'https://')) {
-            return $this->logo_url;
-        }
-
-        return Storage::disk(config('catalog.media_disk'))->url($this->logo_url);
+        return MediaUrl::for($this->logo_url);
     }
 }

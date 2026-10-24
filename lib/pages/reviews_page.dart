@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../models/product.dart';
 import '../services/api_client.dart';
 import '../services/auth_scope.dart';
+import '../theme/redeast_theme.dart';
 
 class ReviewsPage extends StatefulWidget {
   final Product product;
@@ -218,7 +219,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
                             Text(
                               '${'★' * rating}${'☆' * (5 - rating)}',
                               style: const TextStyle(
-                                color: Color(0xFFB7791F),
+                                color: RedEastColors.warning,
                                 fontSize: 14,
                               ),
                             ),
@@ -231,7 +232,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
                               'Doğrulanmış alışveriş',
                               style: TextStyle(
                                 fontSize: 11,
-                                color: Color(0xFF1F8A5B),
+                                color: RedEastColors.success,
                               ),
                             ),
                           ),

@@ -12,4 +12,6 @@ return [
     */
 
     'media_disk' => env('CATALOG_MEDIA_DISK', 'public'),
+
+    'media_url_ttl' => (int) env('CATALOG_MEDIA_URL_TTL', 21600),
 ];

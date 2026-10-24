@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../main.dart' show CartModelScope;
 import '../services/auth_scope.dart';
+import '../widgets/redeast_ui.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -72,11 +73,13 @@ class _RegisterPageState extends State<RegisterPage> {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
+            const Center(child: RedEastLogo(height: 30)),
+            const SizedBox(height: 24),
             Text(
               'Yeni hesap',
               style: Theme.of(context).textTheme.headlineLarge,
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 4),
             Text(
               'RedEast Store hesabınızı oluşturun.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(

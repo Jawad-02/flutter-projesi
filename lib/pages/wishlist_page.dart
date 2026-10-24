@@ -4,6 +4,7 @@ import '../main.dart' show CartModelScope;
 import '../models/product.dart';
 import '../services/api_client.dart';
 import '../services/auth_scope.dart';
+import '../theme/redeast_theme.dart';
 import 'product_detail_page.dart';
 
 class WishlistPage extends StatefulWidget {
@@ -119,14 +120,18 @@ class _WishlistPageState extends State<WishlistPage> {
                                   child: Container(
                                     width: 84,
                                     height: 84,
-                                    color: const Color(0xFFF8F8FA),
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surfaceContainerHighest,
                                     padding: const EdgeInsets.all(8),
                                     child: Image.network(
                                       product.imageUrl,
                                       fit: BoxFit.contain,
-                                      errorBuilder: (_, _, _) => const Icon(
+                                      errorBuilder: (_, _, _) => Icon(
                                         Icons.phone_iphone,
-                                        color: Color(0xFFCCCCCC),
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.outline,
                                       ),
                                     ),
                                   ),
@@ -182,7 +187,7 @@ class _WishlistPageState extends State<WishlistPage> {
                                             onPressed: () => _remove(product),
                                             icon: const Icon(
                                               Icons.favorite,
-                                              color: Color(0xFFED2839),
+                                              color: RedEastColors.red,
                                             ),
                                           ),
                                         ],

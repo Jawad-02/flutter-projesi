@@ -10,6 +10,7 @@ abstract final class RedEastColors {
   static const white = Color(0xFFFFFFFF);
   static const success = Color(0xFF1F8A5B);
   static const warning = Color(0xFFB7791F);
+  static const info = Color(0xFF2563EB);
 }
 
 abstract final class RedEastTheme {
@@ -25,7 +26,7 @@ abstract final class RedEastTheme {
 
     final scheme =
         ColorScheme.fromSeed(
-          seedColor: RedEastColors.red,
+          seedColor: RedEastColors.charcoal,
           brightness: brightness,
         ).copyWith(
           primary: isDark ? RedEastColors.white : RedEastColors.charcoal,
@@ -173,6 +174,58 @@ abstract final class RedEastTheme {
           fontSize: 12,
         ),
       ),
+      chipTheme: ChipThemeData(
+        backgroundColor: surface,
+        selectedColor: scheme.primary,
+        labelStyle: TextStyle(
+          fontFamily: 'CabinetGrotesk',
+          fontSize: 13,
+          color: onSurface,
+        ),
+        secondaryLabelStyle: TextStyle(
+          fontFamily: 'CabinetGrotesk',
+          fontSize: 13,
+          color: scheme.onPrimary,
+        ),
+        side: BorderSide(color: outline),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: isDark
+              ? RedEastColors.white
+              : RedEastColors.charcoal,
+          textStyle: const TextStyle(
+            fontFamily: 'CabinetGrotesk',
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: onSurface,
+          side: BorderSide(color: outline),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          textStyle: const TextStyle(
+            fontFamily: 'CabinetGrotesk',
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: surface,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: surface,
+        surfaceTintColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+      ),
       cardTheme: CardThemeData(
         color: surface,
         elevation: 0,
@@ -205,8 +258,8 @@ abstract final class RedEastTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: RedEastColors.charcoal,
+          borderSide: BorderSide(
+            color: isDark ? RedEastColors.white : RedEastColors.charcoal,
             width: 1.5,
           ),
         ),
