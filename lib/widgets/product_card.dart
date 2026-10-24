@@ -39,7 +39,7 @@ class ProductCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Image.network(
-                        product.image,
+                        product.imageUrl,
                         fit: BoxFit.contain,
                         webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
                         errorBuilder: (_, _, _) => const Icon(
@@ -82,7 +82,7 @@ class ProductCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${product.currency} ${product.price}',
+                    product.price,
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 15,

@@ -125,11 +125,17 @@ reviews, and notifications backed by `/api/v1`.
 - Local emulator: `http://10.0.2.2:8000/api/v1`
 - Production: `https://api.redeast.agency/api/v1`
 - Auth: Sanctum bearer tokens (customer abilities), JSON resources.
-- **Live now:** `GET /api/v1/health`.
-- Planned: `/auth/*`, `/products`, `/categories`, `/brands`, `/cart`,
-  `/coupons/validate`, `/shipping/methods`, `/checkout/quote`, `/orders`,
-  `/addresses`, `/wishlist`, `/reviews`, `/notifications`.
-- The Flutter app still uses the mock `wantapi.com/products.php` until Phase 2.
+- **Live now:**
+  - `GET /api/v1/health`
+  - `GET /api/v1/products` (`category`, `brand`, `search`, `min_price`,
+    `max_price`, `featured`, `sort`, `per_page`)
+  - `GET /api/v1/products/{slug}`
+  - `GET /api/v1/categories` / `{slug}`
+  - `GET /api/v1/brands` / `{slug}`
+- Planned: `/auth/*`, `/cart`, `/coupons/validate`, `/shipping/methods`,
+  `/checkout/quote`, `/orders`, `/addresses`, `/wishlist`, `/reviews`,
+  `/notifications`.
+- Flutter now calls the Laravel API (`ApiConfig`), not `wantapi.com` directly.
 
 ## 7. Commands
 
@@ -169,8 +175,11 @@ php artisan migrate --seed
   `.env`/`.env.example`; the `r2` disk is configured.
 - Admin: `/admin`, branded login; `admin@redeast.agency` (super_admin) and
   `customer@redeast.agency` (customer) seeded with local password `password`.
-- API: `GET /api/v1/health` live. Commerce schema/routes are Phase 2/3.
-- Tests: Pest 5/5 (admin access, customer denial, API health).
+- Phase 2 added catalog schema/models/factories, 7 categories, 1 brand, 20
+  seeded products/variants/images, catalog API, and Filament Catalog resources.
+- The Flutter app now fetches products/categories from the backend and shows
+  category chips; product detail and local cart use the API data.
+- Tests: Pest 11/11 (auth, admin pages, catalog API, health).
 
 ## 9. Planned feature phases
 
@@ -178,7 +187,7 @@ php artisan migrate --seed
 |---|---|
 | 0 | ✅ `.agents` refactor, 5 skills, design spec, git/disk hygiene |
 | 1 | ✅ Brand assets/theme, Filament + Sanctum, Neon/R2 env, DB foundation |
-| 2 | Catalog schema, admin CRUD, API, seed data, Flutter catalog |
+| 2 | ✅ Catalog schema, admin CRUD, API, seed data, Flutter catalog |
 | 3 | Auth, cart, checkout, orders, inventory, coupons, shipping/tax, manual payments |
 | 4 | Reviews, wishlist, notifications, search, reports, roles, localization, tests/CI |
 

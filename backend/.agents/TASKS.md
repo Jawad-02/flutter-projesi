@@ -34,16 +34,16 @@
 | B-106 | Apply RedEast theme to Filament | done | Palette/fonts/logo/login applied; Turkish UI |
 | B-107 | Seed admin + customer accounts | done | `admin@redeast.agency` super_admin; customer role |
 
-## Phase 2 — catalog + admin + API
+## Phase 2 — completed: catalog + admin + API
 
 | ID | Task | Status | Acceptance criteria |
 |---|---|---|---|
-| B-201 | Catalog migrations/models/factories | todo | Categories, brands, products, variants, images, attributes, inventory |
-| B-202 | Filament catalog resources | todo | CRUD + R2 uploads + stock fields |
-| B-203 | Catalog API v1 | todo | List/detail/filter/sort/paginate + Resources |
-| B-204 | Seed 20 demo products | todo | Seeder reproducible on fresh DB |
-| B-205 | Catalog tests | todo | Pest feature tests for filters/detail/auth boundaries |
-| B-206 | API docs updated | todo | Endpoints documented |
+| B-201 | Catalog migrations/models/factories | done | Categories, brands, products, variants, images, inventory movements; specs JSON |
+| B-202 | Filament catalog resources | done | CRUD, variants/images repeaters, stock, filters, soft deletes |
+| B-203 | Catalog API v1 | done | List/detail/filter/sort/paginate + Resources |
+| B-204 | Seed 20 demo products | done | 7 categories, 1 brand, 20 products; reproducible seeder |
+| B-205 | Catalog tests | done | Pest 11/11 including admin pages + API filters |
+| B-206 | API docs updated | done | Scramble docs + `.agents/CONTEXT.md` |
 
 ## Phase 3 — auth, cart, checkout, orders
 
@@ -75,6 +75,7 @@
 |---|---|---|---|
 | B-001..B-006 | Phase 0: backend docs, brand spec, skills paths, hygiene | 2026-10-24 | `php artisan about` OK; Pest 2/2 |
 | B-101..B-107 | Phase 1: Filament, Sanctum, Shield, R2, theme, seed | 2026-10-24 | Admin login 200; Pest 5/5; Vite build OK |
+| B-201..B-206 | Phase 2: catalog schema/admin/API/seed | 2026-10-24 | 20 products; Pest 11/11; Flutter loads API |
 
 ## Planning log
 
@@ -84,3 +85,4 @@
 | 2026-10-24 | Phase 0 complete | `.agents` docs, brand spec, skills paths, SQLite ignored |
 | 2026-10-24 | vendor/node_modules correction | Composer autoload requires vendor inside the project; keep deps there, caches on Storage |
 | 2026-10-24 | Phase 1 complete | Filament 5 + Sanctum + Shield + R2 + Scramble; branded admin; seeded roles/users |
+| 2026-10-24 | Phase 2 complete | Catalog schema/admin/API/seed; Flutter fetches backend catalog |

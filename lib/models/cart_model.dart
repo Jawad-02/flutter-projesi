@@ -15,7 +15,7 @@ class CartModel extends ChangeNotifier {
   String get totalPriceFormatted {
     if (_items.isEmpty) return '\$0.00';
     final total = totalPrice;
-    return '\$${total.toStringAsFixed(0)}';
+    return '\$${total.toStringAsFixed(2)}';
   }
 
   void addItem(Product product) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/category.dart';
 import '../models/product.dart';
 import '../services/api_service.dart';
 import '../widgets/product_card.dart';
@@ -15,16 +16,29 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Product>> _productsFuture;
+  late Future<List<Category>> _categoriesFuture;
+  String? _selectedCategory;
 
   @override
   void initState() {
     super.initState();
+    _categoriesFuture = ApiService.fetchCategories();
     _productsFuture = ApiService.fetchProducts();
   }
 
-  void _refresh() {
+  Future<void> _refresh() async {
     setState(() {
-      _productsFuture = ApiService.fetchProducts();
+      _categoriesFuture = ApiService.fetchCategories();
+      _productsFuture =
+          ApiService.fetchProducts(category: _selectedCategory);
+    });
+    await _productsFuture;
+  }
+
+  void _selectCategory(String? slug) {
+    setState(() {
+      _selectedCategory = slug;
+      _productsFuture = ApiService.fetchProducts(category: slug);
     });
   }
 
@@ -40,15 +54,22 @@ class _HomePageState extends State<HomePage> {
         slivers: [
           SliverToBoxAdapter(child: _BannerWidget()),
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
             sliver: SliverToBoxAdapter(
               child: Text(
                 'Ürünler',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xFF1D1D1F),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
               ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: _CategoryChips(
+              categoriesFuture: _categoriesFuture,
+              selected: _selectedCategory,
+              onSelected: _selectCategory,
             ),
           ),
           FutureBuilder<List<Product>>(
@@ -72,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 16),
                       FilledButton.tonalIcon(
-                        onPressed: _refresh,
+                        onPressed: () => _refresh(),
                         icon: const Icon(Icons.refresh, size: 18),
                         label: const Text('Tekrar Dene'),
                       ),
@@ -124,6 +145,67 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _CategoryChips extends StatelessWidget {
+  final Future<List<Category>> categoriesFuture;
+  final String? selected;
+  final ValueChanged<String?> onSelected;
+
+  const _CategoryChips({
+    required this.categoriesFuture,
+    required this.selected,
+    required this.onSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 48,
+      child: FutureBuilder<List<Category>>(
+        future: categoriesFuture,
+        builder: (context, snapshot) {
+          final categories = snapshot.data ?? const <Category>[];
+
+          return ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            scrollDirection: Axis.horizontal,
+            itemCount: categories.length + 1,
+            separatorBuilder: (_, _) => const SizedBox(width: 8),
+            itemBuilder: (context, index) {
+              final category = index == 0 ? null : categories[index - 1];
+              final isSelected = selected == category?.slug;
+
+              return ChoiceChip(
+                label: Text(index == 0 ? 'Tümü' : category!.name),
+                selected: isSelected,
+                showCheckmark: false,
+                onSelected: (_) => onSelected(category?.slug),
+                selectedColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                side: BorderSide(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .outline
+                      .withValues(alpha: 0.4),
+                ),
+                labelStyle: TextStyle(
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSurface,
+                  fontFamily: 'CabinetGrotesk',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13,
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              );
+            },
+          );
+        },
       ),
     );
   }

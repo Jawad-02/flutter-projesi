@@ -162,7 +162,7 @@ class _CartItemCard extends StatelessWidget {
                 color: const Color(0xFFF8F8FA),
                 padding: const EdgeInsets.all(8),
                 child:                 Image.network(
-                  product.image,
+                  product.imageUrl,
                   fit: BoxFit.contain,
                   webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
                   errorBuilder: (_, _, _) => const Icon(
@@ -200,7 +200,7 @@ class _CartItemCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    '${product.currency} ${product.price}',
+                    product.price,
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 15,

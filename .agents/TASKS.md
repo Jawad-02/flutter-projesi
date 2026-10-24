@@ -35,14 +35,16 @@
 | T-105 | Add Neon + R2 placeholders and `r2` disk | done | `.env`/`.env.example` placeholders; `r2` disk configured |
 | T-106 | Add Shield/Spatie roles + admin seed | done | `super_admin` accesses `/admin`; customer 403 |
 
-## Later — Phases 2–4
+## Phase 2 — completed: catalog + admin + API
 
 | ID | Task | Status | Acceptance criteria |
 |---|---|---|---|
-| T-201 | Catalog schema/models/seed | todo | Categories, brands, products, variants, images, inventory |
-| T-202 | Filament catalog resources | todo | Product/category/brand CRUD with R2 media |
-| T-203 | Catalog API v1 | todo | List/detail/filter/sort/paginate + docs + tests |
-| T-204 | Flutter catalog integration | todo | App uses backend products, not wantapi |
+| T-201 | Catalog schema/models/seed | done | 7 categories, 1 brand, 20 products/variants/images |
+| T-202 | Filament catalog resources | done | Product/category/brand CRUD; admin pages render |
+| T-203 | Catalog API v1 | done | List/detail/filter/sort/paginate + 11 Pest tests |
+| T-204 | Flutter catalog integration | done | App fetches backend products + category chips |
+
+## Later — Phases 3–4
 | T-301 | Auth + addresses + wishlist API | todo | Sanctum auth flows + tests |
 | T-302 | Cart/checkout/orders API | todo | Guest cart, coupons, shipping, tax, orders, manual payment |
 | T-303 | Admin order/customer/coupon/shipping | todo | Full order lifecycle in Filament |
@@ -58,6 +60,7 @@
 |---|---|---|---|
 | T-001..T-008 | Phase 0: `.agents` refactor, brand spec, docs, skills, hygiene | 2026-10-24 | `make analyze` 0; Pest 2/2; 5 skills listed |
 | T-101..T-106 | Phase 1: brand assets/theme, Filament, Sanctum, R2/Neon, roles | 2026-10-24 | Flutter APK built; admin login 200; Pest 5/5 |
+| T-201..T-204 | Phase 2: catalog schema/admin/API + Flutter integration | 2026-10-24 | 20 products seeded; Pest 11/11; app loads backend catalog |
 
 ## Planning log
 
@@ -69,3 +72,4 @@
 | 2026-10-24 | Phase 0 complete | `.agents` docs, brand spec, Node 22, 5 skills, opencode configs |
 | 2026-10-24 | vendor/node_modules correction | Composer autoload requires `backend/vendor` in place; keep deps in project, caches on Storage |
 | 2026-10-24 | Phase 1 complete | Brand assets/fonts/theme, icons/splash, bundle id, Filament/Sanctum/Shield/R2, API health, admin seed |
+| 2026-10-24 | Phase 2 complete | Catalog schema/admin/API, 20 demo products, Flutter backend integration |

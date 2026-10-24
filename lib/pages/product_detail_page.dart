@@ -32,7 +32,7 @@ class ProductDetailPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(32),
               child:               Image.network(
-                product.image,
+                product.imageUrl,
                 fit: BoxFit.contain,
                 webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
                 errorBuilder: (_, _, _) => const Icon(
@@ -68,7 +68,7 @@ class ProductDetailPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  '${product.currency} ${product.price}',
+                  product.price,
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w800,

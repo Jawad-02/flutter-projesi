@@ -126,7 +126,8 @@ SESSION_DRIVER=database
 
 ## 6. API plan (`/api/v1`)
 
-Live now: `GET /api/v1/health`.
+Live now: `/health`, `/products`, `/products/{slug}`, `/categories`,
+`/categories/{slug}`, `/brands`, `/brands/{slug}`.
 
 ```text
 POST   /auth/register
@@ -220,20 +221,26 @@ vendor/bin/pint --dirty --format agent
 - Neon/R2 placeholders in `.env` and `.env.example`; local `.env` stays SQLite.
 - Admin panel access: `admin@redeast.agency` (super_admin) and
   `customer@redeast.agency` (customer); local password `password`.
-- Boost generated root `AGENTS.md`, `CLAUDE.md`, `boost.json`, and four skills in
-  `.agents/skills/`.
+- Phase 2 added catalog migrations/models/factories, 7 categories, 1 brand, and
+  20 demo products with variants + images. `CatalogSeeder` reads
+  `database/seeders/data/catalog.json`.
+- Catalog API live: products (filter/search/sort/paginate), product detail by
+  slug, categories, brands under `/api/v1`.
+- Filament Catalog resources live for categories, brands, and products
+  (variants/images repeaters, stock, filters, soft deletes).
 - `vendor/` and `node_modules/` stay inside the project: Composer autoload
   resolves relative to `vendor/`, so moving it breaks Artisan. Both are ignored
   by Git; caches belong on Storage.
-- Tests: Pest 5/5 (admin access, customer denial, API health).
+- Tests: Pest 11/11 (admin pages, catalog API, auth boundaries, health).
 
 ## 11. Known gaps / next work
 
-1. Build catalog schema/admin/API and seed 20 demo products (Phase 2).
-2. Build auth/cart/checkout/orders (Phase 3).
+1. Auth endpoints + customer addresses/wishlist (Phase 3).
+2. Cart/checkout/orders/inventory/coupons/shipping/tax/manual payments (Phase 3).
 3. Reviews/wishlist/notifications/reports/localization/tests (Phase 4).
 4. Add real Neon/R2 credentials in `.env` and verify the remote disks.
 5. Replace the seeded local password before any deployment.
+6. Replace demo catalog images (wantapi URLs) with R2 media.
 
 ## 12. Decisions to preserve
 
