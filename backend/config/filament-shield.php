@@ -27,7 +27,7 @@ return [
             'pages' => true,
             'widgets' => true,
             'resources' => true,
-            'custom_permissions' => false,
+            'custom_permissions' => true,
         ],
     ],
 
@@ -252,7 +252,13 @@ return [
     |
     */
 
-    'custom_permissions' => [],
+    'custom_permissions' => [
+        'manage_settings' => 'Manage store settings',
+        'view_reports' => 'View reports',
+        'export_reports' => 'Export reports',
+        'view_activity_log' => 'View activity log',
+        'manage_staff' => 'Manage staff',
+    ],
 
     /*
     |--------------------------------------------------------------------------

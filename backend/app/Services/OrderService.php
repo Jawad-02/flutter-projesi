@@ -11,6 +11,7 @@ use App\Models\ShippingMethod;
 use App\Models\User;
 use App\Notifications\OrderPlacedNotification;
 use App\Notifications\OrderStatusUpdatedNotification;
+use App\Support\StoreSettings;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -20,6 +21,7 @@ class OrderService
     public function __construct(
         private readonly CouponService $coupons,
         private readonly CheckoutService $checkout,
+        private readonly StoreSettings $settings,
     ) {}
 
     public function place(?User $user, Cart $cart, array $data): Order
@@ -252,7 +254,7 @@ class OrderService
 
     private function nextNumber(): string
     {
-        $prefix = config('store.order_prefix', 'RE');
+        $prefix = $this->settings->orderPrefix();
 
         do {
             $number = $prefix.'-'.now()->format('ymd').'-'.Str::upper(Str::random(5));

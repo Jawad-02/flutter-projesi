@@ -53,8 +53,9 @@
 
 ## Dashboard UI (backend, tracked separately)
 
-The Filament dashboard build plan lives in `backend/.agents/TASKS.md` (D-001…D-010).
-Dashboard work is web-only and does not change the Flutter app.
+The Filament dashboard build is complete; details and verification live in
+`backend/.agents/TASKS.md` (D-001…D-009 done, D-010 backlog only). Dashboard work is
+web-only and does not change the Flutter app.
 
 ## Phase 4 — in progress
 

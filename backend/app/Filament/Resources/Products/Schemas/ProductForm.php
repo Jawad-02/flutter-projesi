@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Support\StoreSettings;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Repeater;
@@ -61,7 +62,7 @@ class ProductForm
                         : null),
                 TextInput::make('currency')
                     ->required()
-                    ->default('USD')
+                    ->default(fn (): string => app(StoreSettings::class)->currency())
                     ->maxLength(3),
                 FileUpload::make('image_path')
                     ->label('Primary image')
@@ -90,9 +91,16 @@ class ProductForm
                         TextInput::make('sku')
                             ->required(),
                         TextInput::make('price_cents')
-                            ->label('Price (cents)')
+                            ->label('Price')
+                            ->prefix('$')
                             ->numeric()
-                            ->minValue(0),
+                            ->minValue(0)
+                            ->formatStateUsing(fn ($state) => $state === null
+                                ? null
+                                : number_format(((int) $state) / 100, 2, '.', ''))
+                            ->dehydrateStateUsing(fn ($state) => filled($state)
+                                ? (int) round(((float) $state) * 100)
+                                : null),
                         TextInput::make('stock_quantity')
                             ->required()
                             ->numeric()

@@ -207,7 +207,9 @@ php artisan about
 php artisan serve
 npm run dev
 npm run build
-php artisan migrate --seed
+php artisan migrate
+php artisan db:seed
+php artisan shield:generate --all --panel=admin
 php artisan test --compact
 vendor/bin/pint --dirty --format agent
 ```
@@ -241,19 +243,31 @@ vendor/bin/pint --dirty --format agent
 - Phase 5 activated Neon (migrated/seeded), enabled R2 catalog media with signed
   URLs, replaced the catalog with 20 RedEast demo products, and made `/` redirect
   to the Filament dashboard at `/admin` (web-only).
-- Dashboard now has commerce KPI stats, a 7-day revenue chart, recent orders, and
-  top products; product price inputs use dollars instead of raw cents.
-- Tests: Pest 26/26 (auth, cart/merge, checkout/orders, stock, idempotency,
-  addresses, wishlist, reviews, notifications, catalog, admin commerce, health).
+- Dashboard has commerce KPI stats, a 7-day revenue chart, recent orders, top
+  products, quick actions, explicit empty states, and eager-loaded widgets.
+- Dashboard additionally has store settings (`store_settings`), a filtered
+  sales/product/customer/inventory report suite with CSV export, an observer-based
+  activity log (`activity_logs`), a staff management resource, and app-based 2FA
+  available from `/admin/profile` (not forced).
+- Product prices use dollar inputs and stock badges; product tables have bulk
+  activate/deactivate/feature/price adjustments. Order pages show payment history
+  and allow paid → processing → shipped → delivered transitions.
+- Tests: Pest 37/37, 289 assertions (auth, cart/merge, checkout/orders, stock,
+  idempotency, addresses, wishlist, reviews, notifications, catalog, admin
+  commerce, dashboard settings/reports/CSV/staff/activity/2FA).
 
 ## 11. Known gaps / next work
 
-1. Settings + activity log, and CSV reports (stats widget is in place).
-2. Guest checkout and order lookup for guests (currently auth required).
-3. ARB translations for the Flutter app (delegates are wired; UI Turkish).
-4. Replace the seeded local password before any deployment.
-5. Add a custom/public R2 media domain if permanent public URLs are needed.
-6. Dashboard UI build-out (see the next plan).
+1. Guest checkout and order lookup for guests (currently auth required).
+2. ARB translations for the Flutter app (delegates are wired; UI Turkish).
+3. Replace the seeded local password before any deployment.
+4. Add a custom/public R2 media domain if permanent public URLs are needed.
+5. 2FA is available but optional; set `isRequired: true` in `AdminPanelProvider`
+   to enforce it for staff/admin.
+6. The dashboard starts with no orders, so revenue/report tables are empty until
+   a test order is placed.
+7. D-010 backlog only: PDF invoices, email previews, stock alerts, scheduled
+   exports, R2 media library.
 
 ## 12. Decisions to preserve
 

@@ -3,16 +3,21 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Order;
+use App\Support\StoreSettings;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
 
 class SalesChart extends ChartWidget
 {
+    protected static bool $isLazy = false;
+
     protected static ?int $sort = 2;
 
     protected ?string $heading = 'Son 7 gün ciro';
 
     protected int|string|array $columnSpan = 'full';
+
+    protected ?string $maxHeight = '340px';
 
     protected function getData(): array
     {
@@ -37,7 +42,7 @@ class SalesChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Ciro ($)',
+                    'label' => 'Ciro ('.app(StoreSettings::class)->currency().')',
                     'data' => $values,
                     'borderColor' => '#ED2839',
                     'backgroundColor' => 'rgba(237, 40, 57, 0.12)',
@@ -52,5 +57,17 @@ class SalesChart extends ChartWidget
     protected function getType(): string
     {
         return 'line';
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            'scales' => [
+                'y' => [
+                    'beginAtZero' => true,
+                    'ticks' => ['precision' => 0],
+                ],
+            ],
+        ];
     }
 }

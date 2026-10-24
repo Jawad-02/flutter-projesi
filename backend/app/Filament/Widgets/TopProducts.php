@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Resources\Products\ProductResource;
 use App\Models\Product;
+use App\Support\StoreSettings;
 use Filament\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class TopProducts extends TableWidget
 {
+    protected static bool $isLazy = false;
+
     protected static ?int $sort = 4;
 
     protected int|string|array $columnSpan = 1;
@@ -35,13 +38,16 @@ class TopProducts extends TableWidget
                     ->numeric(),
                 TextColumn::make('price_cents')
                     ->label('Fiyat')
-                    ->money('USD', divideBy: 100),
+                    ->money(fn (): string => app(StoreSettings::class)->currency(), divideBy: 100),
             ])
             ->recordActions([
                 Action::make('edit')
                     ->label('Düzenle')
                     ->url(fn (Product $record): string => ProductResource::getUrl('edit', ['record' => $record])),
             ])
+            ->emptyStateHeading('Henüz satış yok')
+            ->emptyStateDescription('Siparişler geldikçe en çok satanlar burada listelenir.')
+            ->emptyStateIcon('heroicon-o-cube')
             ->paginated(false);
     }
 }

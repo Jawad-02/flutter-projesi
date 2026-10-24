@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\Orders\Tables;
 
+use App\Filament\Resources\Orders\Actions\OrderActions;
 use App\Models\Order;
 use App\Services\OrderService;
+use App\Support\StoreSettings;
 use Filament\Actions\Action;
 use Filament\Actions\ViewAction;
 use Filament\Notifications\Notification;
@@ -26,7 +28,7 @@ class OrdersTable
                     ->searchable(),
                 TextColumn::make('total_cents')
                     ->label('Total')
-                    ->money('USD', divideBy: 100)
+                    ->money(fn (): string => app(StoreSettings::class)->currency(), divideBy: 100)
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge()
@@ -85,6 +87,7 @@ class OrdersTable
                         app(OrderService::class)->markPaid($record);
                         Notification::make()->title('Order marked as paid')->success()->send();
                     }),
+                ...OrderActions::fulfillment(),
                 Action::make('cancel')
                     ->label('Cancel')
                     ->icon('heroicon-o-x-circle')

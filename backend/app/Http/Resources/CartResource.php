@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\StoreSettings;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -13,7 +14,7 @@ class CartResource extends JsonResource
             'token' => $this->token,
             'item_count' => $this->itemCount(),
             'subtotal_cents' => $this->subtotalCents(),
-            'currency' => config('store.currency'),
+            'currency' => app(StoreSettings::class)->currency(),
             'items' => CartItemResource::collection($this->whenLoaded('items')),
         ];
     }

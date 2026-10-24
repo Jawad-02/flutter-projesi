@@ -5,11 +5,15 @@ namespace App\Services;
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\ShippingMethod;
+use App\Support\StoreSettings;
 use Illuminate\Validation\ValidationException;
 
 class CheckoutService
 {
-    public function __construct(private readonly CouponService $coupons) {}
+    public function __construct(
+        private readonly CouponService $coupons,
+        private readonly StoreSettings $settings,
+    ) {}
 
     public function quote(Cart $cart, ?Coupon $coupon = null, ?ShippingMethod $shipping = null): array
     {
@@ -38,8 +42,8 @@ class CheckoutService
         $taxable = max(0, $subtotal - $discount);
         $shippingCost = $shipping ? $shipping->priceFor($taxable) : 0;
 
-        $rate = (float) config('store.tax_rate');
-        $inclusive = (bool) config('store.tax_inclusive');
+        $rate = $this->settings->taxRate();
+        $inclusive = $this->settings->taxInclusive();
         $tax = $rate > 0
             ? (int) round($inclusive ? $taxable * $rate / (1 + $rate) : $taxable * $rate)
             : 0;
@@ -47,7 +51,7 @@ class CheckoutService
         $total = $taxable + $shippingCost + ($inclusive ? 0 : $tax);
 
         return [
-            'currency' => config('store.currency'),
+            'currency' => $this->settings->currency(),
             'item_count' => $cart->itemCount(),
             'subtotal_cents' => $subtotal,
             'discount_cents' => $discount,

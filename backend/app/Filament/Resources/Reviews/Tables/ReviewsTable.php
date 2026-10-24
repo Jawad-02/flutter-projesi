@@ -47,6 +47,11 @@ class ReviewsTable
                 SelectFilter::make('is_approved')
                     ->label('Approved')
                     ->options(['1' => 'Approved', '0' => 'Pending']),
+                SelectFilter::make('product_id')
+                    ->label('Product')
+                    ->relationship('product', 'name')
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('rating')
                     ->options([
                         5 => '5 stars',

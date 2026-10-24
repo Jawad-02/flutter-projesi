@@ -75,3 +75,68 @@
 .fi-topbar {
     font-family: var(--font-sans);
 }
+
+/* Dashboard layout and responsive polish */
+.fi-main {
+    min-width: 0;
+}
+
+.fi-page {
+    width: 100%;
+    max-width: 1600px;
+    margin-inline: auto;
+}
+
+.fi-header {
+    gap: 1rem;
+}
+
+.fi-header-actions {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.dark .fi-sidebar {
+    --sidebar-bg: #171717;
+}
+
+.fi-wi-stats-overview-stat-value {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+}
+
+.fi-ta-text {
+    white-space: normal;
+}
+
+@media (max-width: 1024px) {
+    .fi-page {
+        padding-inline: 1rem;
+    }
+
+    .fi-header {
+        align-items: flex-start;
+    }
+
+    .fi-ta-ctn {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .fi-header-actions {
+        width: 100%;
+    }
+
+    .fi-header-actions .fi-btn {
+        flex: 1 1 auto;
+    }
+
+    .fi-page-header-main-ctn {
+        gap: 0.75rem;
+    }
+
+    .fi-ta-table {
+        min-width: 640px;
+    }
+}

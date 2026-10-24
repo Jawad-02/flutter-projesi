@@ -10,6 +10,10 @@ class ShieldPermissionSeeder extends Seeder
 {
     public function run(): void
     {
+        foreach (['ManageSettings', 'ViewReports', 'ExportReports', 'ViewActivityLog', 'ManageStaff'] as $permission) {
+            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
+        }
+
         if (! Permission::query()->exists()) {
             return;
         }

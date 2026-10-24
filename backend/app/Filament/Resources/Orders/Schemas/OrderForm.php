@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Orders\Schemas;
 
+use App\Support\StoreSettings;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -28,7 +29,7 @@ class OrderForm
                     ->required(),
                 TextInput::make('currency')
                     ->required()
-                    ->default('USD'),
+                    ->default(fn (): string => app(StoreSettings::class)->currency()),
                 TextInput::make('subtotal_cents')
                     ->required()
                     ->numeric(),

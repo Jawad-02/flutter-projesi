@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Orders\Schemas;
 
 use App\Models\Order;
+use App\Support\StoreSettings;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -31,11 +32,11 @@ class OrderInfolist
                 TextEntry::make('customer_phone')->label('Phone')->placeholder('-'),
                 TextEntry::make('placed_at')->dateTime(),
                 TextEntry::make('coupon.code')->label('Coupon')->placeholder('-'),
-                TextEntry::make('total_cents')->label('Total')->money('USD', divideBy: 100),
-                TextEntry::make('subtotal_cents')->label('Subtotal')->money('USD', divideBy: 100),
-                TextEntry::make('discount_cents')->label('Discount')->money('USD', divideBy: 100),
-                TextEntry::make('shipping_cents')->label('Shipping')->money('USD', divideBy: 100),
-                TextEntry::make('tax_cents')->label('Tax included')->money('USD', divideBy: 100),
+                TextEntry::make('total_cents')->label('Total')->money(fn (): string => app(StoreSettings::class)->currency(), divideBy: 100),
+                TextEntry::make('subtotal_cents')->label('Subtotal')->money(fn (): string => app(StoreSettings::class)->currency(), divideBy: 100),
+                TextEntry::make('discount_cents')->label('Discount')->money(fn (): string => app(StoreSettings::class)->currency(), divideBy: 100),
+                TextEntry::make('shipping_cents')->label('Shipping')->money(fn (): string => app(StoreSettings::class)->currency(), divideBy: 100),
+                TextEntry::make('tax_cents')->label('Tax included')->money(fn (): string => app(StoreSettings::class)->currency(), divideBy: 100),
                 TextEntry::make('notes')->columnSpanFull()->placeholder('-'),
                 KeyValueEntry::make('shipping_address')
                     ->label('Shipping address')
@@ -49,10 +50,22 @@ class OrderInfolist
                         TextEntry::make('product_name')->label('Product'),
                         TextEntry::make('sku')->label('SKU'),
                         TextEntry::make('quantity'),
-                        TextEntry::make('unit_price_cents')->label('Unit')->money('USD', divideBy: 100),
-                        TextEntry::make('line_total_cents')->label('Line total')->money('USD', divideBy: 100),
+                        TextEntry::make('unit_price_cents')->label('Unit')->money(fn (): string => app(StoreSettings::class)->currency(), divideBy: 100),
+                        TextEntry::make('line_total_cents')->label('Line total')->money(fn (): string => app(StoreSettings::class)->currency(), divideBy: 100),
                     ])
                     ->columns(5)
+                    ->columnSpanFull(),
+                RepeatableEntry::make('payments')
+                    ->label('Payments')
+                    ->schema([
+                        TextEntry::make('provider'),
+                        TextEntry::make('method'),
+                        TextEntry::make('status')->badge(),
+                        TextEntry::make('amount_cents')->money(fn (): string => app(StoreSettings::class)->currency(), divideBy: 100),
+                        TextEntry::make('transaction_id')->placeholder('-'),
+                        TextEntry::make('paid_at')->dateTime()->placeholder('-'),
+                    ])
+                    ->columns(6)
                     ->columnSpanFull(),
             ]);
     }
