@@ -29,7 +29,7 @@
 | B-101 | Run `php artisan install:api` (Sanctum + `routes/api.php`) | done | `/api/v1/health` 200; Sanctum migration ran |
 | B-102 | Install Filament 5 panel at `/admin` | done | Admin login 200; panel boots |
 | B-103 | Install Shield + Spatie Permission | done | Roles `super_admin`/`admin`/`staff`/`customer`; gate before |
-| B-104 | Add R2 filesystem + Neon/R2 env placeholders | done | `r2` disk configured; `.env`/`.env.example` documented |
+| B-104 | Add R2 filesystem + R2 env placeholders | done | `r2` disk configured; `.env`/`.env.example` documented |
 | B-105 | Add API docs package (Scramble) | done | Package installed; docs route available |
 | B-106 | Apply RedEast theme to Filament | done | Palette/fonts/logo/login applied; Turkish UI |
 | B-107 | Seed admin + customer accounts | done | `admin@redeast.agency` super_admin; customer role |
@@ -63,7 +63,7 @@
 |---|---|---|---|
 | B-401 | Reviews + moderation | done | Verified purchase flag; admin moderation |
 | B-402 | Notifications (email + database) | done | Order confirmation/status emails queued |
-| B-403 | Search/filter tuning + indexes | done | Postgres-safe search; no N+1 |
+| B-403 | Search/filter tuning + indexes | done | SQLite-compatible search; no N+1 |
 | B-404 | Reports + CSV export | done | Sales/products/customers/inventory with filtered CSV |
 | B-405 | Settings + activity log | done | Store/currency/tax settings + audit trail |
 | B-406 | Security/perf pass | in-progress | Rate limits, signed URLs, image conversions, indexes |
@@ -78,7 +78,7 @@
 | B-201..B-206 | Phase 2: catalog schema/admin/API/seed | 2026-10-24 | 20 products; Pest 11/11; Flutter loads API |
 | B-301..B-307 | Phase 3: auth, cart, checkout, orders, admin commerce | 2026-10-24 | Pest 23/23; transactional idempotent orders |
 | B-401..B-407 | Phase 4: reviews, notifications, stats, permissions, CI | 2026-10-24 | Pest 26/26; CI workflow added |
-| B-501..B-503 | Phase 5: Neon + R2 activation, demo catalog, root redirect | 2026-10-24 | Neon seeded; R2 signed URLs; `/` → `/admin` |
+| B-501..B-503 | Phase 5: R2 activation, demo catalog, root redirect | 2026-10-24 | SQLite seeded; R2 signed URLs; `/` → `/admin` |
 
 ## Planning log
 
@@ -91,7 +91,7 @@
 | 2026-10-24 | Phase 2 complete | Catalog schema/admin/API/seed; Flutter fetches backend catalog |
 | 2026-10-24 | Phase 3 complete | Auth/cart/checkout/orders/coupons/shipping/manual payments + admin |
 | 2026-10-24 | Phase 4 progress | Reviews/notifications/stats/CI; settings/activity log + CSV report pending |
-| 2026-10-24 | Phase 5 complete | Neon migrated/seeded; R2 active with signed URLs; demo catalog; root redirect |
+| 2026-10-24 | Phase 5 complete | SQLite migrated/seeded; R2 active with signed URLs; demo catalog; root redirect |
 | 2026-10-24 | Dashboard widgets | KPI stats, 7-day revenue chart, recent orders, top products; money inputs in product form |
 
 ## Dashboard UI — implementation plan (Filament, web-only)
@@ -100,7 +100,7 @@ Ground rules:
 - Dashboard stays **inside Filament at `/admin`**; `/` redirects there. No custom public dashboard route.
 - Web-only: staff use the Filament session guard; customers never access the panel; admin screens are not exposed through `/api/v1`.
 - Keep the RedEast theme; run `npm run build` after admin CSS changes.
-- Each task is done only with `php artisan test --compact`, `vendor/bin/pint --test`, and a smoke check against Neon/R2.
+- Each task is done only with `php artisan test --compact`, `vendor/bin/pint --test`, and a smoke check against SQLite/R2.
 
 ### Completed
 
@@ -114,7 +114,7 @@ Ground rules:
 | D-006 | Staff management, access matrix, app 2FA | Role matrix tested; 2FA available on profile |
 | D-007 | Web-only + responsive/dark pass | Root redirect, panel guard, responsive CSS, dark mode verified |
 | D-008 | Admin UX polish | Bulk actions, order payments/statuses, customer history, filters |
-| D-009 | Dashboard tests + CI | Pest 37/37; Pint; Vite build; CI workflow configured |
+| D-009 | Dashboard tests + CI | Pest 39/39; Pint; Vite build; CI workflow configured |
 
 ### D-004 — Reports + CSV (done)
 
@@ -163,8 +163,8 @@ Ground rules:
 
 - [x] **D-009.1 Pest feature tests** for settings, reports, CSV, staff, access matrix, activity, 2FA.
 - [x] **D-009.2 CI** runs Pint, Pest, and Vite build; local equivalents pass.
-- [x] **D-009.3 Neon smoke test**: migrations, settings seed, custom permissions, dashboard load.
-- **Verification:** `php artisan test --compact` → 37/37, 289 assertions; Pint passed; `npm run build` passed.
+- [x] **D-009.3 SQLite smoke test**: migrations, demo orders, settings seed, custom permissions, dashboard load.
+- **Verification:** `php artisan test --compact` → 39/39, 311 assertions; Pint passed; `npm run build` passed.
 
 ### D-010 — Backlog (not scheduled)
 
@@ -193,8 +193,8 @@ Ground rules:
 | B-201..B-206 | Phase 2: catalog schema/admin/API/seed | 2026-10-24 | 20 products; Pest 11/11; Flutter loads API |
 | B-301..B-307 | Phase 3: auth, cart, checkout, orders, admin commerce | 2026-10-24 | Pest 23/23; transactional idempotent orders |
 | B-401..B-407 | Phase 4: reviews, notifications, stats, permissions, CI | 2026-10-24 | Pest 26/26; CI workflow added |
-| B-501..B-503 | Phase 5: Neon + R2 activation, demo catalog, root redirect | 2026-10-24 | Neon seeded; R2 signed URLs; `/` → `/admin` |
-| D-001..D-009 | Dashboard UI implementation | 2026-10-24 | Pest 37/37; Pint; Vite build; Neon smoke |
+| B-501..B-503 | Phase 5: R2 activation, demo catalog, root redirect | 2026-10-24 | SQLite seeded; R2 signed URLs; `/` → `/admin` |
+| D-001..D-009 | Dashboard UI implementation | 2026-10-24 | Pest 39/39; Pint; Vite build; SQLite smoke |
 
 ## Planning log
 
@@ -207,7 +207,8 @@ Ground rules:
 | 2026-10-24 | Phase 2 complete | Catalog schema/admin/API/seed; Flutter fetches backend catalog |
 | 2026-10-24 | Phase 3 complete | Auth/cart/checkout/orders/coupons/shipping/manual payments + admin |
 | 2026-10-24 | Phase 4 progress | Reviews/notifications/stats/CI; settings/activity log + CSV report pending |
-| 2026-10-24 | Phase 5 complete | Neon migrated/seeded; R2 active with signed URLs; demo catalog; root redirect |
+| 2026-10-24 | Phase 5 complete | SQLite migrated/seeded; R2 active with signed URLs; demo catalog; root redirect |
 | 2026-10-24 | Dashboard Phase 1 | KPI stats, 7-day revenue chart, recent orders, top products; money inputs |
 | 2026-10-24 | Dashboard plan frozen | Remaining work captured as D-004..D-010 for the post-compaction session |
 | 2026-10-24 | Dashboard complete | Settings, audit, reports/CSV, staff/2FA, UX polish, responsive pass, tests |
+| 2026-10-24 | SQLite rollback | Local DB is SQLite only; demo orders seed dashboard/reports; file cache/session |

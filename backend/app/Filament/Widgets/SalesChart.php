@@ -19,6 +19,8 @@ class SalesChart extends ChartWidget
 
     protected ?string $maxHeight = '340px';
 
+    protected ?string $pollingInterval = null;
+
     protected function getData(): array
     {
         $start = now()->subDays(6)->startOfDay();

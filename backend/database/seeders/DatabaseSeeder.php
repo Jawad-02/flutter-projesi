@@ -20,5 +20,9 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             ShieldPermissionSeeder::class,
         ]);
+
+        if (app()->environment('local')) {
+            $this->call(DemoOrderSeeder::class);
+        }
     }
 }

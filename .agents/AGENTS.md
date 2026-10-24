@@ -34,7 +34,7 @@ If anything below conflicts with a one-off user request, ask first.
 - **Do not run `flutter upgrade`, `flutter channel`, or reinstall the SDK.**
 - **Do not create a nested Git repo inside `backend/`.** The backend is part of
   this repo and of the same PR.
-- **No secrets in code.** Neon and R2 credentials live in `backend/.env`.
+- **No secrets in code.** R2 credentials live in `backend/.env`.
 - **Money is stored as integer cents** in the backend; never floats.
 - **Prefer the smallest correct change.** Match existing formatting and naming.
 - **After every change**, run the relevant verification (section 5). Update

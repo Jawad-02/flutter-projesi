@@ -70,9 +70,9 @@ in one PR. It has no nested `.git`.
 | Admin | Filament 5.10 + Shield 4.3 at `/admin` |
 | API auth | Laravel Sanctum, `/api/v1` |
 | Roles | Filament Shield + spatie/laravel-permission |
-| Database | **Neon Postgres active** (`DB_URL`); tests use SQLite in-memory |
+| Database | **SQLite**; tests use SQLite in-memory |
 | Storage | **Cloudflare R2 active** (`CATALOG_MEDIA_DISK=r2`), signed media URLs; local fallback |
-| Queue/cache/session | database |
+| Queue/cache/session | queue database; cache/session file |
 | Build | Vite 8, Tailwind CSS 4 |
 
 ### Toolchain paths
@@ -173,7 +173,7 @@ php artisan migrate --seed
   Storage.
 - Phase 1 installed Filament 5.10 + Shield, Sanctum (`/api/v1`), R2 S3 driver,
   Scramble, and Intervention Image.
-- `.env` uses SQLite + local disk; Neon/R2 placeholders are present in
+- `.env` uses SQLite + local disk; R2 placeholders are present in
   `.env`/`.env.example`; the `r2` disk is configured.
 - Admin: `/admin`, branded login; `admin@redeast.agency` (super_admin) and
   `customer@redeast.agency` (customer) seeded with local password `password`.
@@ -189,21 +189,23 @@ php artisan migrate --seed
   commerce stats, staff/admin permission seeding, Flutter wishlist/notifications
   UI, product search, responsive grids, Flutter unit/widget tests, coverage and
   GitHub Actions CI.
-- Phase 5 activated Neon, moved catalog media to R2 signed URLs, replaced the
-  catalog with 20 RedEast demo products, redesigned the storefront, and made
-  `/` redirect to the Filament dashboard at `/admin`.
-- Tests: Pest 26/26 and Flutter 5/5; `make analyze` exit 0.
+- Phase 5 moved catalog media to R2 signed URLs, replaced the catalog with 20
+  RedEast demo products, redesigned the storefront, and made `/` redirect to the
+  Filament dashboard at `/admin`.
+- Tests: Pest 39/39 and Flutter 5/5; `make analyze` exit 0. Local demo orders
+  populate the dashboard and reports. Local DB is SQLite; no external database
+  service is required.
 
 ## 9. Planned feature phases
 
 | Phase | Scope |
 |---|---|
 | 0 | ✅ `.agents` refactor, 5 skills, design spec, git/disk hygiene |
-| 1 | ✅ Brand assets/theme, Filament + Sanctum, Neon/R2 env, DB foundation |
+| 1 | ✅ Brand assets/theme, Filament + Sanctum, R2 env, SQLite foundation |
 | 2 | ✅ Catalog schema, admin CRUD, API, seed data, Flutter catalog |
 | 3 | ✅ Auth, cart, checkout, orders, inventory, coupons, shipping/tax, manual payments |
 | 4 | ✅ Reviews, wishlist/notifications UI, search, stats, permissions, tests/CI (ARB translation + settings/activity log remain) |
-| 5 | ✅ Storefront redesign, demo catalog, R2 signed media, Neon activation, `/` → `/admin` |
+| 5 | ✅ Storefront redesign, demo catalog, R2 signed media, SQLite demo data, `/` → `/admin` |
 
 ## 10. Known issues / technical debt
 

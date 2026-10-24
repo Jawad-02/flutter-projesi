@@ -10,7 +10,7 @@ Laravel 13 backend for **RedEast Store**:
 - Filament 5 admin dashboard (`/admin`) for products, orders, customers, coupons,
   shipping, reviews, settings, and reports.
 - Auth for customers (Sanctum) and staff (Filament session + Shield roles).
-- Neon Postgres in production; Cloudflare R2 for media.
+- SQLite database; Cloudflare R2 for media.
 - RedEast is used for **design only**; no RedEast business data is imported.
 
 The backend lives at `backend/` inside the Flutter repository and has no nested
@@ -27,10 +27,10 @@ Git repo. It ships in the same PR as the app.
 | Admin | Filament 5.10 + Shield 4.3 at `/admin` | installed |
 | API auth | Sanctum, `routes/api.php` + `routes/api/v1.php` | installed |
 | Roles | Filament Shield + spatie/laravel-permission | installed |
-| DB | Neon Postgres active (`DB_URL`, `DB_SSLMODE`); tests use SQLite in-memory | active |
+| DB | SQLite for local and deployed use; tests use SQLite in-memory | active |
 | Media | Cloudflare R2 via `r2` disk; API returns signed URLs | active |
 | Frontend build | Vite 8 + Tailwind CSS 4 | installed |
-| Queue/cache/session | database | active |
+| Queue/cache/session | queue database; cache/session file | active |
 | API docs | Scramble | installed |
 | Image processing | intervention/image-laravel | installed |
 
@@ -59,7 +59,7 @@ backend/
 ├── resources/css/app.css           # Tailwind 4 + RedEast tokens
 ├── public/brand/                   # logos/fonts served by the dashboard
 ├── tests/                          # Pest
-└── .env / .env.example             # SQLite local; Neon/R2 placeholders
+└── .env / .env.example             # SQLite; R2 placeholders
 ```
 
 ## 4. Environment
@@ -76,17 +76,8 @@ APP_TIMEZONE=Europe/Istanbul
 DB_CONNECTION=sqlite
 FILESYSTEM_DISK=local
 QUEUE_CONNECTION=database
-CACHE_STORE=database
-SESSION_DRIVER=database
-
-# Neon (fill in / uncomment to switch to Postgres)
-# DB_CONNECTION=pgsql
-# DB_URL=postgresql://USER:PASSWORD@HOST/DATABASE?sslmode=require
-# DB_HOST=
-# DB_PORT=5432
-# DB_DATABASE=
-# DB_USERNAME=
-# DB_PASSWORD=
+CACHE_STORE=file
+SESSION_DRIVER=file
 
 # Cloudflare R2
 # R2_ACCESS_KEY_ID=
@@ -98,13 +89,12 @@ SESSION_DRIVER=database
 ```
 
 ### Production (`.env.example`)
-- `DB_CONNECTION=pgsql`, `DB_URL=postgresql://USER:PASSWORD@HOST/DATABASE?sslmode=require`
+- `DB_CONNECTION=sqlite`; the SQLite file is the application database.
 - `FILESYSTEM_DISK=r2`
 - `R2_*` placeholders as above.
 - Add a custom `r2` disk in `config/filesystems.php` using the `R2_*` values and
   path-style endpoint.
-- Make `sslmode` env-driven if Neon requires `require` explicitly.
-- The user fills the real tokens in `.env`; never commit them.
+- The user fills the real R2 tokens in `.env`; never commit them.
 
 ## 5. Planned data model
 
@@ -221,7 +211,7 @@ vendor/bin/pint --dirty --format agent
   `super_admin`, `admin`, `staff`, `customer` roles.
 - Sanctum installed; `GET /api/v1/health` returns 200.
 - R2 S3 disk, Scramble, and Intervention Image installed.
-- Neon/R2 placeholders in `.env` and `.env.example`; local `.env` stays SQLite.
+- `.env` and `.env.example` use SQLite; R2 placeholders remain for media.
 - Admin panel access: `admin@redeast.agency` (super_admin) and
   `customer@redeast.agency` (customer); local password `password`.
 - Phase 2 added catalog migrations/models/factories, 7 categories, 1 brand, and
@@ -240,9 +230,9 @@ vendor/bin/pint --dirty --format agent
   by Git; caches belong on Storage.
 - Phase 4 added review moderation, database/mail order notifications, commerce
   dashboard stats, review admin resource, and admin/staff permission seeding.
-- Phase 5 activated Neon (migrated/seeded), enabled R2 catalog media with signed
-  URLs, replaced the catalog with 20 RedEast demo products, and made `/` redirect
-  to the Filament dashboard at `/admin` (web-only).
+- Phase 5 enabled R2 catalog media with signed URLs, replaced the catalog with
+  20 RedEast demo products, and made `/` redirect to the Filament dashboard at
+  `/admin` (web-only). Local development now uses SQLite exclusively.
 - Dashboard has commerce KPI stats, a 7-day revenue chart, recent orders, top
   products, quick actions, explicit empty states, and eager-loaded widgets.
 - Dashboard additionally has store settings (`store_settings`), a filtered
@@ -252,7 +242,12 @@ vendor/bin/pint --dirty --format agent
 - Product prices use dollar inputs and stock badges; product tables have bulk
   activate/deactivate/feature/price adjustments. Order pages show payment history
   and allow paid → processing → shipped → delivered transitions.
-- Tests: Pest 37/37, 289 assertions (auth, cart/merge, checkout/orders, stock,
+- `DemoOrderSeeder` runs only in `local` and creates six orders (paid, pending,
+  refunded) across the last 30 days, plus payments and activity entries. This
+  activates the dashboard KPIs, chart, recent orders, top products, and reports.
+- Local `.env` uses SQLite with file cache and file sessions; no external DB is
+  required. Run `php artisan migrate:fresh --seed` to rebuild the demo.
+- Tests: Pest 39/39, 311 assertions (auth, cart/merge, checkout/orders, stock,
   idempotency, addresses, wishlist, reviews, notifications, catalog, admin
   commerce, dashboard settings/reports/CSV/staff/activity/2FA).
 
@@ -264,9 +259,7 @@ vendor/bin/pint --dirty --format agent
 4. Add a custom/public R2 media domain if permanent public URLs are needed.
 5. 2FA is available but optional; set `isRequired: true` in `AdminPanelProvider`
    to enforce it for staff/admin.
-6. The dashboard starts with no orders, so revenue/report tables are empty until
-   a test order is placed.
-7. D-010 backlog only: PDF invoices, email previews, stock alerts, scheduled
+6. D-010 backlog only: PDF invoices, email previews, stock alerts, scheduled
    exports, R2 media library.
 
 ## 12. Decisions to preserve

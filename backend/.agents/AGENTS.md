@@ -22,7 +22,7 @@ not add RedEast business data or client project content.
 - **Never commit or push** unless the user explicitly asks.
 - **Ask before adding a package or changing dependencies.** The approved stack is
   in `CONTEXT.md`.
-- **No secrets in code or Git.** Neon/R2 credentials live only in `.env`.
+- **No secrets in code or Git.** R2 credentials live only in `.env`.
 - **Money is integer cents** (`unsignedBigInteger`/integer columns, cast helpers).
   Never use floats for money.
 - **Use database transactions** for checkout, order creation, stock changes,
@@ -46,15 +46,15 @@ not add RedEast business data or client project content.
 - Pest 5.3, Pint, Laravel Boost 2.2
 - Filament 5.10 + Shield 4.3, Sanctum, Scramble, Intervention Image
 - Node 20 for Vite; Tailwind CSS 4
-- Local DB: SQLite; production: Neon Postgres via `DB_URL`
+- Database: SQLite for local and deployed use
 - Storage: local `public` in dev; Cloudflare R2 in production
-- Cache/session/queue: database
+- Cache/session: file; queue: database
 
 ```bash
 cd backend
 php artisan serve
 npm run dev          # or npm run build
-php artisan migrate --seed
+php artisan migrate:fresh --seed   # local: resets and seeds demo orders
 php artisan test --compact
 vendor/bin/pint --dirty --format agent
 ```
@@ -90,6 +90,6 @@ parent `.agents/skills/` are for the app, not the backend.
 - `php artisan test --compact` for the touched area.
 - `vendor/bin/pint --dirty --format agent` after PHP changes.
 - `npm run build` after admin theme/Tailwind changes.
-- Migrations run on a fresh SQLite DB, and are Postgres-safe.
+- Migrations run on a fresh SQLite DB.
 - `.agents/TASKS.md` updated; API changes mirrored in the Flutter `.agents/CONTEXT.md`.
 - Final report: changed files, commands run, remaining risks.
