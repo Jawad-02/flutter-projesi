@@ -192,7 +192,7 @@ php artisan migrate --seed
 - Phase 5 moved catalog media to R2 signed URLs, replaced the catalog with 20
   RedEast demo products, redesigned the storefront, and made `/` redirect to the
   Filament dashboard at `/admin`.
-- Tests: Pest 39/39 and Flutter 5/5; `make analyze` exit 0. Local demo orders
+- Tests: Pest 38/38 and Flutter 5/5; `make analyze` exit 0. Local demo orders
   populate the dashboard and reports. Local DB is SQLite; no external database
   service is required.
 

@@ -114,7 +114,7 @@ Ground rules:
 | D-006 | Staff management, access matrix, app 2FA | Role matrix tested; 2FA available on profile |
 | D-007 | Web-only + responsive/dark pass | Root redirect, panel guard, responsive CSS, dark mode verified |
 | D-008 | Admin UX polish | Bulk actions, order payments/statuses, customer history, filters |
-| D-009 | Dashboard tests + CI | Pest 39/39; Pint; Vite build; CI workflow configured |
+| D-009 | Dashboard tests + CI | Pest 38/38; Pint; Vite build; CI workflow configured |
 
 ### D-004 — Reports + CSV (done)
 
@@ -164,7 +164,7 @@ Ground rules:
 - [x] **D-009.1 Pest feature tests** for settings, reports, CSV, staff, access matrix, activity, 2FA.
 - [x] **D-009.2 CI** runs Pint, Pest, and Vite build; local equivalents pass.
 - [x] **D-009.3 SQLite smoke test**: migrations, demo orders, settings seed, custom permissions, dashboard load.
-- **Verification:** `php artisan test --compact` → 39/39, 311 assertions; Pint passed; `npm run build` passed.
+- **Verification:** `php artisan test --compact` → 38/38, 310 assertions; Pint passed; `npm run build` passed.
 
 ### D-010 — Backlog (not scheduled)
 
@@ -194,7 +194,7 @@ Ground rules:
 | B-301..B-307 | Phase 3: auth, cart, checkout, orders, admin commerce | 2026-10-24 | Pest 23/23; transactional idempotent orders |
 | B-401..B-407 | Phase 4: reviews, notifications, stats, permissions, CI | 2026-10-24 | Pest 26/26; CI workflow added |
 | B-501..B-503 | Phase 5: R2 activation, demo catalog, root redirect | 2026-10-24 | SQLite seeded; R2 signed URLs; `/` → `/admin` |
-| D-001..D-009 | Dashboard UI implementation | 2026-10-24 | Pest 39/39; Pint; Vite build; SQLite smoke |
+| D-001..D-009 | Dashboard UI implementation | 2026-10-24 | Pest 38/38; Pint; Vite build; SQLite smoke |
 
 ## Planning log
 
@@ -212,3 +212,4 @@ Ground rules:
 | 2026-10-24 | Dashboard plan frozen | Remaining work captured as D-004..D-010 for the post-compaction session |
 | 2026-10-24 | Dashboard complete | Settings, audit, reports/CSV, staff/2FA, UX polish, responsive pass, tests |
 | 2026-10-24 | SQLite rollback | Local DB is SQLite only; demo orders seed dashboard/reports; file cache/session |
+| 2026-10-24 | Pre-push cleanup | README refreshed; unused scaffold/test/Vite inputs removed; ignore rules tightened |

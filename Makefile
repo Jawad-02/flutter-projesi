@@ -38,7 +38,7 @@ help:
 	@echo "make stop       Shut down the emulator"
 	@echo "make build      Build the debug APK"
 	@echo "make analyze    Run flutter analyze"
-	@echo "make test       Run flutter test (currently fails: stale widget test)"
+	@echo "make test       Run flutter test"
 	@echo "make doctor     Run flutter doctor -v"
 	@echo "make devices    List adb and Flutter devices"
 	@echo "make logs       Stream Flutter logcat"
@@ -77,7 +77,6 @@ analyze:
 	"$(FLUTTER)" analyze --no-fatal-infos
 
 test:
-	@echo "NOTE: test/widget_test.dart is stale (expects Home/Cart, UI renders Ana Sayfa/Sepet)."
 	"$(FLUTTER)" test
 
 doctor:

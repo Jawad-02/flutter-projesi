@@ -1,60 +1,118 @@
-# Flutter E-Ticaret
+# RedEast Store
 
-Flutter ile geliştirilmiş, Android, iOS ve Web platformlarında çalışan bir e-ticaret uygulaması.
+A full-stack demo e-commerce project:
 
-## Kullanılan Flutter Sürümü
+- **Flutter** storefront for Android, iOS, and web
+- **Laravel 13** JSON API at `/api/v1`
+- **Filament 5** admin dashboard at `/admin`
 
-- **Flutter Kanalı:** stable
-- **Flutter Revision:** `c9a6c48423`
-- **Dart SDK:** `^3.12.2` (<4.0.0)
-- **Desteklenen Platformlar:** Android, iOS, Web
+Local development uses **SQLite only**. No external database service is required.
 
-## Çalıştırma Adımları
+## What changed
 
-### 1. Gereksinimler
+- RedEast branding, theme, logo, fonts, and responsive storefront
+- Catalog, cart, checkout, orders, reviews, wishlist, and notifications
+- Filament dashboard with revenue KPIs, chart, recent orders, and top products
+- Reports for sales, products, customers, and inventory, with CSV export
+- Store settings, activity log, staff management, and optional 2FA
+- Local database moved to SQLite; file cache and file sessions
+- Demo orders seed the dashboard so reports are populated immediately
+- Backend and Flutter tests plus GitHub Actions CI
 
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) (stable kanal, sürüm 3.18+) kurulu olmalıdır.
-- Bir IDE (Android Studio, VS Code veya IntelliJ) veya komut satırı.
+## Stack
 
-### 2. Projeyi Klonlama
+| Area | Technology |
+|---|---|
+| App | Flutter 3.47.7 / Dart 3.12 |
+| Backend | PHP 8.4, Laravel 13.38 |
+| Admin | Filament 5.10, Shield, Sanctum |
+| Database | SQLite |
+| Media | Local disk or Cloudflare R2 |
+| Build | Vite 8, Tailwind CSS 4 |
+
+## Run the backend
+
+Requirements: PHP 8.4, Composer 2, Node 20.
 
 ```bash
-git clone https://github.com/ahmet0033/flutter-projesi.git
-cd flutter_projesi
+cd backend
+
+composer install
+cp .env.example .env
+php artisan key:generate
+
+touch database/database.sqlite
+npm ci
+npm run build
+
+php artisan migrate:fresh --seed
+php artisan serve
 ```
 
-### 3. Bağımlılıkları Yükleme
+Open:
+
+- Store/dashboard: `http://127.0.0.1:8000`
+- Admin: `http://127.0.0.1:8000/admin`
+
+Demo accounts:
+
+- Admin: `admin@redeast.agency` / `password`
+- Customer: `customer@redeast.agency` / `password`
+
+`migrate:fresh --seed` resets the local SQLite database and creates the demo
+catalog plus six demo orders. Demo orders are seeded only when `APP_ENV=local`.
+
+## Run the Flutter app
 
 ```bash
 flutter pub get
+flutter run
 ```
 
-Bu komut, `pubspec.yaml` dosyasındaki bağımlılıkları indirir ve Android Gradle wrapper (`gradlew`) dosyalarını otomatik oluşturur.
+The API URL defaults to:
 
-### 4. Uygulamayı Çalıştırma
+- Web: `http://127.0.0.1:8000/api/v1`
+- Android emulator: `http://10.0.2.2:8000/api/v1`
 
-- **Bağlı bir cihaz veya emülatör ile:**
+For a physical device, pass your computer's LAN address:
 
-  ```bash
-  flutter run
-  ```
+```bash
+flutter run --dart-define=API_BASE_URL=http://192.168.1.10:8000/api/v1
+```
 
-- **Web tarayıcıda:**
+## Tests
 
-  ```bash
-  flutter run -d chrome
-  ```
+Backend:
 
-- **Belirli bir platform için derleme:**
+```bash
+cd backend
+php artisan test --compact
+vendor/bin/pint --test
+```
 
-  ```bash
-  flutter build apk          # Android APK
-  flutter build ios           # iOS (yalnızca macOS)
-  flutter build web           # Web
-  ```
+Flutter:
 
-### Notlar
+```bash
+flutter analyze --no-fatal-infos
+flutter test
+```
 
-- `android/local.properties` dosyası `.gitignore` ile ignore edilmiştir. `flutter pub get` çalıştırıldığında otomatik oluşur. El ile oluşturmak gerekmez.
-- `android/gradlew` ve `android/gradlew.bat` dosyaları artık sürüm kontrolüne dahil edilmiştir. `flutter pub get` alternatif olarak bunları yeniden oluşturabilir.
-- `.dart_tool/`, `/build/`, `.idea/` gibi dizinler `.gitignore` ile ignore edilmiştir ve sürüm kontrolünde yer almaz.
+Tests use SQLite in-memory. No emulator or screenshots are required.
+
+## Project layout
+
+```text
+lib/                 Flutter app
+assets/              RedEast brand assets
+test/                Flutter tests
+backend/             Laravel API + Filament admin
+backend/database/    Migrations, seeders, local SQLite file
+.github/workflows/   CI
+```
+
+## Notes
+
+- Change the seeded passwords before any real deployment.
+- R2 is optional; configure `CATALOG_MEDIA_DISK` and R2 credentials in
+  `backend/.env` when needed.
+- Local `.env`, SQLite files, build output, and dependencies are ignored by Git.

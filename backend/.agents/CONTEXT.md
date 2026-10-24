@@ -247,7 +247,7 @@ vendor/bin/pint --dirty --format agent
   activates the dashboard KPIs, chart, recent orders, top products, and reports.
 - Local `.env` uses SQLite with file cache and file sessions; no external DB is
   required. Run `php artisan migrate:fresh --seed` to rebuild the demo.
-- Tests: Pest 39/39, 311 assertions (auth, cart/merge, checkout/orders, stock,
+- Tests: Pest 38/38, 310 assertions (auth, cart/merge, checkout/orders, stock,
   idempotency, addresses, wishlist, reviews, notifications, catalog, admin
   commerce, dashboard settings/reports/CSV/staff/activity/2FA).
 
