@@ -1,23 +1,20 @@
 # RedEast Store
 
-A full-stack demo e-commerce project:
+RedEast Store is the RedEast-branded version of the original Flutter
+E-Ticaret application. The Flutter client remains the storefront, and the
+repository now also contains a Laravel API and Filament admin dashboard so the
+app can run end to end.
+
+## Overview
 
 - **Flutter** storefront for Android, iOS, and web
 - **Laravel 13** JSON API at `/api/v1`
 - **Filament 5** admin dashboard at `/admin`
-
-Local development uses **SQLite only**. No external database service is required.
-
-## What changed
-
-- RedEast branding, theme, logo, fonts, and responsive storefront
-- Catalog, cart, checkout, orders, reviews, wishlist, and notifications
-- Filament dashboard with revenue KPIs, chart, recent orders, and top products
-- Reports for sales, products, customers, and inventory, with CSV export
-- Store settings, activity log, staff management, and optional 2FA
-- Local database moved to SQLite; file cache and file sessions
-- Demo orders seed the dashboard so reports are populated immediately
-- Backend and Flutter tests plus GitHub Actions CI
+- **SQLite** local database with demo catalog and orders
+- RedEast branding, responsive UI, cart, checkout, orders, reviews, wishlist,
+  notifications, and account management
+- Dashboard KPIs, revenue chart, recent orders, top products, reports with CSV
+  export, store settings, activity log, staff management, and optional 2FA
 
 ## Stack
 
@@ -53,6 +50,7 @@ Open:
 
 - Store/dashboard: `http://127.0.0.1:8000`
 - Admin: `http://127.0.0.1:8000/admin`
+- API health check: `http://127.0.0.1:8000/api/v1/health`
 
 Demo accounts:
 
@@ -67,6 +65,15 @@ catalog plus six demo orders. Demo orders are seeded only when `APP_ENV=local`.
 ```bash
 flutter pub get
 flutter run
+```
+
+Other useful commands:
+
+```bash
+flutter run -d chrome       # web
+flutter build apk           # Android
+flutter build web           # web release
+flutter build ios           # iOS, macOS only
 ```
 
 The API URL defaults to:
@@ -110,9 +117,15 @@ backend/database/    Migrations, seeders, local SQLite file
 .github/workflows/   CI
 ```
 
+## Backend documentation
+
+See [backend/README.md](backend/README.md) for the backend-specific quick start.
+The API is versioned under `/api/v1`; the admin dashboard is web-only.
+
 ## Notes
 
 - Change the seeded passwords before any real deployment.
 - R2 is optional; configure `CATALOG_MEDIA_DISK` and R2 credentials in
   `backend/.env` when needed.
 - Local `.env`, SQLite files, build output, and dependencies are ignored by Git.
+- The original Flutter app structure and platform support are unchanged.
