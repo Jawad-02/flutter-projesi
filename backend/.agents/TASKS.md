@@ -78,6 +78,7 @@
 | B-201..B-206 | Phase 2: catalog schema/admin/API/seed | 2026-10-24 | 20 products; Pest 11/11; Flutter loads API |
 | B-301..B-307 | Phase 3: auth, cart, checkout, orders, admin commerce | 2026-10-24 | Pest 23/23; transactional idempotent orders |
 | B-401..B-407 | Phase 4: reviews, notifications, stats, permissions, CI | 2026-10-24 | Pest 26/26; CI workflow added |
+| B-501..B-503 | Phase 5: Neon + R2 activation, demo catalog, root redirect | 2026-10-24 | Neon seeded; R2 signed URLs; `/` → `/admin` |
 
 ## Planning log
 
@@ -90,3 +91,16 @@
 | 2026-10-24 | Phase 2 complete | Catalog schema/admin/API/seed; Flutter fetches backend catalog |
 | 2026-10-24 | Phase 3 complete | Auth/cart/checkout/orders/coupons/shipping/manual payments + admin |
 | 2026-10-24 | Phase 4 progress | Reviews/notifications/stats/CI; settings/activity log + CSV report pending |
+| 2026-10-24 | Phase 5 complete | Neon migrated/seeded; R2 active with signed URLs; demo catalog; root redirect |
+
+## Next — Dashboard UI (Filament, web-only)
+
+| ID | Task | Status | Acceptance criteria |
+|---|---|---|---|
+| D-001 | Root `/` → `/admin` redirect; remove welcome page | done | `/` returns 302 to `/admin` |
+| D-002 | Branded dashboard shell (sidebar/topbar/logo/fonts/colors) | in-progress | RedEast theme applied across panel |
+| D-003 | Custom dashboard page with KPI widgets + revenue chart | todo | Dashboard shows revenue/orders/AOV/customers/low stock + chart |
+| D-004 | Reports + CSV export | todo | Date-filtered sales/products/customers export |
+| D-005 | Store settings + activity log | todo | Editable currency/tax/shipping/contact; audit trail |
+| D-006 | Staff roles/permissions/2FA | todo | Shield permissions assigned; staff limited; 2FA enabled |
+| D-007 | Web-only/responsive verification | todo | Dashboard usable on desktop/tablet; no mobile API exposure |

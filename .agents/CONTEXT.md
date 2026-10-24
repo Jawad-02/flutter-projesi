@@ -70,8 +70,8 @@ in one PR. It has no nested `.git`.
 | Admin | Filament 5.10 + Shield 4.3 at `/admin` |
 | API auth | Laravel Sanctum, `/api/v1` |
 | Roles | Filament Shield + spatie/laravel-permission |
-| Database | SQLite locally; Neon Postgres in production (`DB_URL`) |
-| Storage | Local `public` locally; Cloudflare R2 via S3 driver in production |
+| Database | **Neon Postgres active** (`DB_URL`); tests use SQLite in-memory |
+| Storage | **Cloudflare R2 active** (`CATALOG_MEDIA_DISK=r2`), signed media URLs; local fallback |
 | Queue/cache/session | database |
 | Build | Vite 8, Tailwind CSS 4 |
 
@@ -189,6 +189,9 @@ php artisan migrate --seed
   commerce stats, staff/admin permission seeding, Flutter wishlist/notifications
   UI, product search, responsive grids, Flutter unit/widget tests, coverage and
   GitHub Actions CI.
+- Phase 5 activated Neon, moved catalog media to R2 signed URLs, replaced the
+  catalog with 20 RedEast demo products, redesigned the storefront, and made
+  `/` redirect to the Filament dashboard at `/admin`.
 - Tests: Pest 26/26 and Flutter 5/5; `make analyze` exit 0.
 
 ## 9. Planned feature phases
@@ -200,6 +203,7 @@ php artisan migrate --seed
 | 2 | ✅ Catalog schema, admin CRUD, API, seed data, Flutter catalog |
 | 3 | ✅ Auth, cart, checkout, orders, inventory, coupons, shipping/tax, manual payments |
 | 4 | ✅ Reviews, wishlist/notifications UI, search, stats, permissions, tests/CI (ARB translation + settings/activity log remain) |
+| 5 | ✅ Storefront redesign, demo catalog, R2 signed media, Neon activation, `/` → `/admin` |
 
 ## 10. Known issues / technical debt
 
@@ -211,9 +215,7 @@ php artisan migrate --seed
 | 4 | `dart:html` deprecated | `http_client_web.dart:2` | 2 accepted analyzer infos |
 | 5 | Guest checkout not supported | `/orders` requires Sanctum | Login required before ordering |
 | 6 | Address-book UI still deferred (wishlist UI is done) | backend APIs ready | Follow-up |
-| 7 | Orders list has no separate detail screen | `orders_page.dart` | Follow-up |
 | 8 | Localization only wires Flutter delegates; ARB translations pending | `lib/`, `pubspec.yaml` | UI remains Turkish |
-| 9 | Demo images are external wantapi URLs | `CatalogSeeder` | Replace with R2 media before release |
 | 10 | Admin price inputs are labeled in cents | `ProductForm` | Usability; add a money input later |
 | 11 | API base URL defaults to `10.0.2.2` for the emulator | `lib/config/api_config.dart` | Physical device needs `--dart-define=API_BASE_URL=...` |
 | 12 | iOS build impossible on Linux | `ios/` | Environment |

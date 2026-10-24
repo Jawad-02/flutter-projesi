@@ -67,6 +67,7 @@
 | T-201..T-204 | Phase 2: catalog schema/admin/API + Flutter integration | 2026-10-24 | 20 products seeded; Pest 11/11; app loads backend catalog |
 | T-301..T-304 | Phase 3: auth, carts, checkout, orders, admin commerce | 2026-10-24 | Pest 23/23; Flutter APK builds; manual guest cart/login UI verified |
 | T-401..T-404 | Phase 4: reviews, notifications, search, wishlist UI, stats, tests/CI | 2026-10-24 | Pest 26/26; Flutter 5/5; CI added |
+| T-501 | Phase 5: storefront redesign, demo catalog, R2/Neon activation | 2026-10-24 | R2 signed media + Neon seeded; `/` → `/admin` |
 
 ## Planning log
 
@@ -81,3 +82,4 @@
 | 2026-10-24 | Phase 2 complete | Catalog schema/admin/API, 20 demo products, Flutter backend integration |
 | 2026-10-24 | Phase 3 complete | Auth/cart/checkout/orders, coupons/shipping/tax, admin commerce; wishlist/address UI deferred |
 | 2026-10-24 | Phase 4 progress | Reviews, notifications, wishlist/search UI, stats, permissions, tests/CI; ARB + settings/activity log pending |
+| 2026-10-24 | Phase 5 | Storefront redesigned, demo catalog, R2 signed media, Neon active, root redirect |

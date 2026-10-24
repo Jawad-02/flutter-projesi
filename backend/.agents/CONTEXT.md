@@ -27,9 +27,8 @@ Git repo. It ships in the same PR as the app.
 | Admin | Filament 5.10 + Shield 4.3 at `/admin` | installed |
 | API auth | Sanctum, `routes/api.php` + `routes/api/v1.php` | installed |
 | Roles | Filament Shield + spatie/laravel-permission | installed |
-| DB (local) | SQLite | active |
-| DB (prod) | Neon Postgres (`DB_URL`, `DB_SSLMODE`) | placeholders ready |
-| Media (prod) | Cloudflare R2 via `r2` S3 disk | placeholders ready |
+| DB | Neon Postgres active (`DB_URL`, `DB_SSLMODE`); tests use SQLite in-memory | active |
+| Media | Cloudflare R2 via `r2` disk; API returns signed URLs | active |
 | Frontend build | Vite 8 + Tailwind CSS 4 | installed |
 | Queue/cache/session | database | active |
 | API docs | Scramble | installed |
@@ -239,6 +238,9 @@ vendor/bin/pint --dirty --format agent
   by Git; caches belong on Storage.
 - Phase 4 added review moderation, database/mail order notifications, commerce
   dashboard stats, review admin resource, and admin/staff permission seeding.
+- Phase 5 activated Neon (migrated/seeded), enabled R2 catalog media with signed
+  URLs, replaced the catalog with 20 RedEast demo products, and made `/` redirect
+  to the Filament dashboard at `/admin` (web-only).
 - Tests: Pest 26/26 (auth, cart/merge, checkout/orders, stock, idempotency,
   addresses, wishlist, reviews, notifications, catalog, admin commerce, health).
 
@@ -247,9 +249,9 @@ vendor/bin/pint --dirty --format agent
 1. Settings + activity log, and CSV reports (stats widget is in place).
 2. Guest checkout and order lookup for guests (currently auth required).
 3. ARB translations for the Flutter app (delegates are wired; UI Turkish).
-4. Add real Neon/R2 credentials in `.env` and verify the remote disks.
-5. Replace the seeded local password before any deployment.
-6. Replace demo catalog images (wantapi URLs) with R2 media.
+4. Replace the seeded local password before any deployment.
+5. Add a custom/public R2 media domain if permanent public URLs are needed.
+6. Dashboard UI build-out (see the next plan).
 
 ## 12. Decisions to preserve
 
