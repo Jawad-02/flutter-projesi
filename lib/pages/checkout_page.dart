@@ -273,6 +273,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             Text('Kargo', style: theme.textTheme.titleLarge),
             const SizedBox(height: 10),
             DropdownButtonFormField<int>(
+              key: ValueKey(_shippingMethodId),
               initialValue: _shippingMethodId,
               decoration: const InputDecoration(labelText: 'Kargo yöntemi'),
               items: _shippingMethods
