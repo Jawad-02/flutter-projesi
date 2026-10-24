@@ -12,6 +12,8 @@ class CommerceStats extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
 
+    protected int|string|array $columnSpan = 'full';
+
     protected function getStats(): array
     {
         $paidOrders = Order::query()->where('payment_status', Order::PAYMENT_PAID);

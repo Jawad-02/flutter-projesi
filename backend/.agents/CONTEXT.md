@@ -241,6 +241,8 @@ vendor/bin/pint --dirty --format agent
 - Phase 5 activated Neon (migrated/seeded), enabled R2 catalog media with signed
   URLs, replaced the catalog with 20 RedEast demo products, and made `/` redirect
   to the Filament dashboard at `/admin` (web-only).
+- Dashboard now has commerce KPI stats, a 7-day revenue chart, recent orders, and
+  top products; product price inputs use dollars instead of raw cents.
 - Tests: Pest 26/26 (auth, cart/merge, checkout/orders, stock, idempotency,
   addresses, wishlist, reviews, notifications, catalog, admin commerce, health).
 

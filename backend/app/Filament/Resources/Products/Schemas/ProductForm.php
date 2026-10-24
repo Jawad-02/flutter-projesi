@@ -39,14 +39,26 @@ class ProductForm
                 Textarea::make('description')
                     ->columnSpanFull(),
                 TextInput::make('price_cents')
-                    ->label('Price (cents)')
+                    ->label('Price')
+                    ->prefix('$')
                     ->required()
                     ->numeric()
-                    ->minValue(0),
+                    ->minValue(0)
+                    ->formatStateUsing(fn ($state) => $state === null
+                        ? null
+                        : number_format(((int) $state) / 100, 2, '.', ''))
+                    ->dehydrateStateUsing(fn ($state) => (int) round(((float) $state) * 100)),
                 TextInput::make('compare_at_price_cents')
-                    ->label('Compare at price (cents)')
+                    ->label('Compare at price')
+                    ->prefix('$')
                     ->numeric()
-                    ->minValue(0),
+                    ->minValue(0)
+                    ->formatStateUsing(fn ($state) => $state === null
+                        ? null
+                        : number_format(((int) $state) / 100, 2, '.', ''))
+                    ->dehydrateStateUsing(fn ($state) => filled($state)
+                        ? (int) round(((float) $state) * 100)
+                        : null),
                 TextInput::make('currency')
                     ->required()
                     ->default('USD')

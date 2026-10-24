@@ -92,15 +92,16 @@
 | 2026-10-24 | Phase 3 complete | Auth/cart/checkout/orders/coupons/shipping/manual payments + admin |
 | 2026-10-24 | Phase 4 progress | Reviews/notifications/stats/CI; settings/activity log + CSV report pending |
 | 2026-10-24 | Phase 5 complete | Neon migrated/seeded; R2 active with signed URLs; demo catalog; root redirect |
+| 2026-10-24 | Dashboard widgets | KPI stats, 7-day revenue chart, recent orders, top products; money inputs in product form |
 
 ## Next — Dashboard UI (Filament, web-only)
 
 | ID | Task | Status | Acceptance criteria |
 |---|---|---|---|
 | D-001 | Root `/` → `/admin` redirect; remove welcome page | done | `/` returns 302 to `/admin` |
-| D-002 | Branded dashboard shell (sidebar/topbar/logo/fonts/colors) | in-progress | RedEast theme applied across panel |
-| D-003 | Custom dashboard page with KPI widgets + revenue chart | todo | Dashboard shows revenue/orders/AOV/customers/low stock + chart |
+| D-002 | Branded dashboard shell (sidebar/topbar/logo/fonts/colors) | done | RedEast theme applied across panel |
+| D-003 | Custom dashboard page with KPI widgets + revenue chart | done | Stats, 7-day revenue chart, recent orders, top products |
 | D-004 | Reports + CSV export | todo | Date-filtered sales/products/customers export |
 | D-005 | Store settings + activity log | todo | Editable currency/tax/shipping/contact; audit trail |
-| D-006 | Staff roles/permissions/2FA | todo | Shield permissions assigned; staff limited; 2FA enabled |
-| D-007 | Web-only/responsive verification | todo | Dashboard usable on desktop/tablet; no mobile API exposure |
+| D-006 | Staff roles/permissions/2FA | in-progress | Permissions seeded; 2FA pending |
+| D-007 | Web-only/responsive verification | in-progress | Root redirect + panel auth verified; visual pass pending |
