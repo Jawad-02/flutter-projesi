@@ -51,6 +51,11 @@
 | T-303 | Admin order/customer/coupon/shipping | done | Order status actions, customers, coupons, shipping |
 | T-304 | Flutter auth/cart/checkout/orders/profile | done | Login/register, server cart, checkout, orders; address/wishlist UI deferred |
 
+## Dashboard UI (backend, tracked separately)
+
+The Filament dashboard build plan lives in `backend/.agents/TASKS.md` (D-001…D-010).
+Dashboard work is web-only and does not change the Flutter app.
+
 ## Phase 4 — in progress
 
 | T-401 | Reviews/wishlist/notifications/search | done | Review moderation + API; wishlist/notifications UI; search field |
